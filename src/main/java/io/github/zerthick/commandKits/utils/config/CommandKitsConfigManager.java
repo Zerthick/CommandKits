@@ -18,7 +18,7 @@ public class CommandKitsConfigManager {
     private  Logger logger;
     private static CommandKitsConfigManager instance = null;
     protected CommandKitsConfigManager(){
-        //Singleton Desgin Pattern
+        //Singleton Design Pattern
     }
 
     public static CommandKitsConfigManager getInstance(){

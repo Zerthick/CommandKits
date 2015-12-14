@@ -17,13 +17,13 @@ public class CommandKitManager {
         return kits;
     }
 
-    public boolean isCommand(String cmdName){
-        return kits.containsKey(cmdName);
+    public boolean isKit(String kitName){
+        return kits.containsKey(kitName);
     }
 
-    public boolean hasRequirements(Player player, String cmdName){
-        if(isCommand(cmdName)){
-            CommandKit kit = kits.get(cmdName);
+    public boolean hasRequirements(Player player, String kitName){
+        if(isKit(kitName)){
+            CommandKit kit = kits.get(kitName);
             try {
                 return !kit.getRequirementsMap(player).containsValue(false);
             } catch (IllegalAccessException e) {
@@ -32,10 +32,10 @@ public class CommandKitManager {
         return false;
     }
 
-    public Map<String, Boolean> getRequirementsMap(Player player, String cmdName){
-        if(isCommand(cmdName)){
+    public Map<String, Boolean> getRequirementsMap(Player player, String kitName){
+        if(isKit(kitName)){
             try {
-                return kits.get(cmdName).getRequirementsMap(player);
+                return kits.get(kitName).getRequirementsMap(player);
             } catch (IllegalAccessException e) {
             }
         }

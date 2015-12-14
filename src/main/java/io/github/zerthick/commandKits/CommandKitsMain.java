@@ -1,6 +1,7 @@
 package io.github.zerthick.commandKits;
 
 import com.google.inject.Inject;
+import io.github.zerthick.commandKits.cmd.CommandKitsCommandRegister;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
 import io.github.zerthick.commandKits.utils.config.CommandKitsConfigManager;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -47,15 +48,24 @@ public class CommandKitsMain {
 
     private CommandKitManager kitManager;
 
+    public CommandKitManager getKitManager() {
+        return kitManager;
+    }
+
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
+
         //Setup ConfigManager
         configManager = CommandKitsConfigManager.getInstance();
         configManager.setUp(defaultConfigPath, configLoader, getLogger());
 
         //Load kits from config
-        getLogger().info(configManager.loadKits().toString());
+        kitManager = new CommandKitManager(configManager.loadKits());
 
+        // Register Commands
+        CommandKitsCommandRegister commandRegister = new CommandKitsCommandRegister(
+                instance);
+        commandRegister.registerCmds();
 
         // Log Start Up to Console
         getLogger().info(
