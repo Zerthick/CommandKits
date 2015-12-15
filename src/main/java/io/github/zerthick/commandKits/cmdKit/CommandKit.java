@@ -1,15 +1,15 @@
 package io.github.zerthick.commandKits.cmdKit;
 
+import org.spongepowered.api.data.DataHolder;
+import org.spongepowered.api.data.Property;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandKit {
 
@@ -17,6 +17,37 @@ public class CommandKit {
     private final String description;
     private final Map<String, String> requirements;
     private final List<String> commands;
+
+    private static final Map<String, Key> dataKeyMap = new HashMap<String, Key>(){
+        {
+            put("CAN_FLY", Keys.CAN_FLY);
+            put("DISARMED", Keys.DISARMED);
+            put("DISPLAY_NAME", Keys.DISPLAY_NAME);
+            put("EXPERIENCE_FROM_START_OF_LEVEL", Keys.EXPERIENCE_FROM_START_OF_LEVEL);
+            put("EXPERIENCE_LEVEL", Keys.EXPERIENCE_LEVEL);
+            put("EXPERIENCE_SINCE_LEVEL", Keys.EXPERIENCE_SINCE_LEVEL);
+            put("FIRST_DATE_PLAYED", Keys.FIRST_DATE_PLAYED);
+            put("FLYING_SPEED", Keys.FLYING_SPEED);
+            put("FOOD_LEVEL", Keys.FOOD_LEVEL);
+            put("GAME_MODE", Keys.GAME_MODE);
+            put("HEALTH", Keys.HEALTH);
+            put("HEALTH_SCALE", Keys.HEALTH_SCALE);
+            put("HELD_EXPERIENCE", Keys.HELD_EXPERIENCE);
+            put("INVISIBLE", Keys.INVISIBLE);
+            put("IS_AFLAME", Keys.IS_AFLAME);
+            put("IS_FLYING", Keys.IS_FLYING);
+            put("IS_SLEEPING", Keys.IS_SLEEPING);
+            put("IS_SNEAKING", Keys.IS_SNEAKING);
+            put("IS_SPRINTING", Keys.IS_SPRINTING);
+            put("IS_WET", Keys.IS_WET);
+            put("IS_WHITELISTED", Keys.IS_WHITELISTED);
+            put("LAST_DAMAGE", Keys.LAST_DAMAGE);
+            put("MAX_HEALTH", Keys.MAX_HEALTH);
+            put("REMAINING_AIR", Keys.REMAINING_AIR);
+            put("SHOWS_DISPLAY_NAME", Keys.SHOWS_DISPLAY_NAME);
+            put("WALKING_SPEED", Keys.WALKING_SPEED);
+        }
+    };
 
     public CommandKit(String name, String description, Map<String, String> requirements, List<String> commands) {
         this.name = name;
@@ -42,58 +73,33 @@ public class CommandKit {
     }
 
     public boolean hasPermission(Player player){
-        return player.hasPermission(requirements.get("permission"));
+        return requirements.containsKey("permission") ? player.hasPermission(requirements.get("permission")) : true;
     }
 
-    public Map<String,Boolean> getRequirementsMap(Player player) throws IllegalAccessException {
+    public Map<String,Boolean> getRequirementsMap(Player player) {
         Map<String, Boolean> requirementsMap = new HashMap<>();
 
         if(requirements.containsKey("permission")){
             requirementsMap.put("permission", player.hasPermission(requirements.get("permission")));
         }
 
-        Field[] dataKeys = Keys.class.getDeclaredFields();
-        for(String keyName : requirements.keySet()) {
-            if(keyName.startsWith("KEYS.")) {
-                String keyNameCleaned = keyName.replaceFirst("KEYS.", "").toUpperCase();
-                for (Field field : dataKeys) {
-                    if (field.getName().equals(keyNameCleaned)) {
-                        Key<?> key = (Key<?>) field.get(null);
-                        if (player.supports(key)) {
-                            Object keyValue = player.get((Key<? extends BaseValue<Object>>) key).get();
-                            String comparison = requirements.get(keyName);
-                            switch (comparison){
-                                case "true":
-                                    requirementsMap.put(keyNameCleaned, ((Boolean) keyValue));
-                                    break;
-                                case "false":
-                                    requirementsMap.put(keyNameCleaned, (!(Boolean) keyValue));
-                                    break;
-                                default:
-                                    if(comparison.startsWith("=")){
-                                        requirementsMap.put(keyNameCleaned, keyValue.toString()
-                                                .equalsIgnoreCase(comparison.substring(1)));
-                                    } else if (comparison.startsWith("<=")){
-                                        requirementsMap.put(keyNameCleaned, keyValue.toString()
-                                                .compareToIgnoreCase(comparison.substring(1)) <= 0);
-                                    } else if (comparison.startsWith("<")) {
-                                        requirementsMap.put(keyNameCleaned, keyValue.toString()
-                                                .compareToIgnoreCase(comparison.substring(1)) < 0);
-                                    } else if (comparison.startsWith(">=")) {
-                                        requirementsMap.put(keyNameCleaned, keyValue.toString()
-                                                .compareToIgnoreCase(comparison.substring(1)) >= 0);
-                                    } else if (comparison.startsWith(">")) {
-                                        requirementsMap.put(keyNameCleaned, keyValue.toString()
-                                                .compareToIgnoreCase(comparison.substring(1)) > 0);
-                                    }
-                            }
-                        }
-                        break;
+        requirements.keySet().stream().filter(keyName -> keyName.startsWith("KEYS_")).forEach(keyName -> {
+            String cleanedKeyName = keyName.replace("KEYS_", "");
+            requirementsMap.put(cleanedKeyName, true);
+            if (dataKeyMap.containsKey(cleanedKeyName)) {
+                Optional<?> optionalValue = player.get(dataKeyMap.get(cleanedKeyName));
+                if (optionalValue.isPresent()) {
+                    Object value = optionalValue.get();
+                    requirementsMap.put(cleanedKeyName + " : " + value, true);
+                    if (value instanceof Boolean) {
+
+                    } else if (value instanceof Text) {
+
                     }
                 }
             }
-        }
-
+        });
+        requirementsMap.put("Map: " +  requirements.keySet().toString(), true);
         return requirementsMap;
     }
 

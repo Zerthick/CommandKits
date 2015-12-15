@@ -24,20 +24,14 @@ public class CommandKitManager {
     public boolean hasRequirements(Player player, String kitName){
         if(isKit(kitName)){
             CommandKit kit = kits.get(kitName);
-            try {
-                return !kit.getRequirementsMap(player).containsValue(false);
-            } catch (IllegalAccessException e) {
-            }
+            return !kit.getRequirementsMap(player).containsValue(false);
         }
         return false;
     }
 
     public Map<String, Boolean> getRequirementsMap(Player player, String kitName){
         if(isKit(kitName)){
-            try {
-                return kits.get(kitName).getRequirementsMap(player);
-            } catch (IllegalAccessException e) {
-            }
+            return kits.get(kitName).getRequirementsMap(player);
         }
         return new HashMap<>();
     }

@@ -40,7 +40,7 @@ public class CommandKitsConfigManager {
                     " by the /kc info command").setValue("This is an example kit");
             exampleKitNode.getNode("requirements", "permission").setComment("This is the permission required to run" +
                     " /kc on this kit").setValue("commandKits.example");
-            exampleKitNode.getNode("requirements", "KEYS.EXPERIENCE_LEVEL ").setComment("This requirement specifies that the player" +
+            exampleKitNode.getNode("requirements", "KEYS_EXPERIENCE_LEVEL").setComment("This requirement specifies that the player" +
                     " requires 5 enchanting levels to get this kit").setValue(">=5");
             List<String> commandList = new LinkedList<>();
             commandList.add("minecraft:tell %p Hello!");
@@ -60,7 +60,7 @@ public class CommandKitsConfigManager {
         try {
             for (Object key : keySet) {
                 CommandKit kit = config.getNode("kits", key).getValue(TypeToken.of(CommandKit.class));
-                kits.put(kit.getName(), kit);
+                kits.put(kit.getName().toUpperCase(), kit);
             }
         } catch (ObjectMappingException e) {
             logger.error("Error loading kits from config! Error: " + e);
