@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2015  Zerthick
+ *
+ * This file is part of CommandKits.
+ *
+ * CommandKits is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * CommandKits is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package io.github.zerthick.commandKits.utils.config;
 
 import com.google.common.reflect.TypeToken;
@@ -43,8 +62,8 @@ public class CommandKitsConfigManager {
             exampleKitNode.getNode("requirements", "KEYS_EXPERIENCE_LEVEL").setComment("This requirement specifies that the player" +
                     " requires 5 enchanting levels to get this kit").setValue(">=5");
             List<String> commandList = new LinkedList<>();
-            commandList.add("minecraft:tell {PLAYER_NAME} Hello!");
-            commandList.add("$minecraft:time set day");
+            commandList.add("minecraft:me I used the example kit!");
+            commandList.add("$minecraft:tell {PLAYER_NAME} You used the example kit!");
             exampleKitNode.getNode("commands").setComment("List containing commands that will be executed by this kit" +
                     " commands starting with \'$\' will be executed by the console, otherwise they will be executed by" +
                     " the player, \'%p\' will be replaced a runtime with the executing player's name")

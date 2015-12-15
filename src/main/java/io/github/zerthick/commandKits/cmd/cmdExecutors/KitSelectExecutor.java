@@ -1,5 +1,25 @@
+/*
+ * Copyright (C) 2015  Zerthick
+ *
+ * This file is part of CommandKits.
+ *
+ * CommandKits is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * CommandKits is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package io.github.zerthick.commandKits.cmd.cmdExecutors;
 
+import io.github.zerthick.commandKits.cmdKit.CommandKit;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -11,6 +31,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExecutor{
@@ -29,8 +50,13 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                 String kitName = optionalKitName.get().toUpperCase();
                 CommandKitManager kitManager = plugin.getKitManager();
                 if(kitManager.isKit(kitName)){
-                    plugin.getLogger().info(kitManager.getKit(kitName).getRequirementsMap(player).toString());
-                    kitManager.getKit(kitName).executeCommands(player);
+                    CommandKit kit = kitManager.getKit(kitName);
+                    if(kit.hasPermission(player)){
+                        Map<String, Boolean> requirementsMap = kit.getRequirementsMap(player);
+                        if(!requirementsMap.containsValue(false)){
+                            kit.executeCommands(player);
+                        }
+                    }
                 }
             } else {
                 src.sendMessage(Texts.of(TextColors.DARK_GREEN, container.getName(),
