@@ -29,7 +29,8 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                 String kitName = optionalKitName.get().toUpperCase();
                 CommandKitManager kitManager = plugin.getKitManager();
                 if(kitManager.isKit(kitName)){
-                    plugin.getLogger().info(kitManager.getRequirementsMap(player, kitName).toString());
+                    plugin.getLogger().info(kitManager.getKit(kitName).getRequirementsMap(player).toString());
+                    kitManager.getKit(kitName).executeCommands(player);
                 }
             } else {
                 src.sendMessage(Texts.of(TextColors.DARK_GREEN, container.getName(),

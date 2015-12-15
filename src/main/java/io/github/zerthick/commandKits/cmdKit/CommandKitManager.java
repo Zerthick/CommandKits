@@ -21,18 +21,10 @@ public class CommandKitManager {
         return kits.containsKey(kitName);
     }
 
-    public boolean hasRequirements(Player player, String kitName){
+    public CommandKit getKit(String kitName){
         if(isKit(kitName)){
-            CommandKit kit = kits.get(kitName);
-            return !kit.getRequirementsMap(player).containsValue(false);
+            return kits.get(kitName);
         }
-        return false;
-    }
-
-    public Map<String, Boolean> getRequirementsMap(Player player, String kitName){
-        if(isKit(kitName)){
-            return kits.get(kitName).getRequirementsMap(player);
-        }
-        return new HashMap<>();
+        return null;
     }
 }

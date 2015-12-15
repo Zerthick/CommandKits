@@ -43,7 +43,7 @@ public class CommandKitsConfigManager {
             exampleKitNode.getNode("requirements", "KEYS_EXPERIENCE_LEVEL").setComment("This requirement specifies that the player" +
                     " requires 5 enchanting levels to get this kit").setValue(">=5");
             List<String> commandList = new LinkedList<>();
-            commandList.add("minecraft:tell %p Hello!");
+            commandList.add("minecraft:tell {PLAYER_NAME} Hello!");
             commandList.add("$minecraft:time set day");
             exampleKitNode.getNode("commands").setComment("List containing commands that will be executed by this kit" +
                     " commands starting with \'$\' will be executed by the console, otherwise they will be executed by" +
