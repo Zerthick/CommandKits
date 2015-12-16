@@ -73,7 +73,13 @@ public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecu
                                 }
                             });
                         }
-                        listBuilder(outputList, kit.getName()).sendTo(src);
+                        Text header;
+                        if(kit.hasRequirements(player)){
+                            header = Texts.of(TextColors.GREEN, kit.getName());
+                        } else {
+                            header = Texts.of(TextColors.RED, kit.getName());
+                        }
+                        listBuilder(outputList, header).sendTo(src);
                     } else {
                         src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
                     }
@@ -82,15 +88,16 @@ public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecu
                 }
                 return CommandResult.success();
             }
+            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
         }
 
         return CommandResult.empty();
     }
 
-    private PaginationBuilder listBuilder(List<Text> list, String header){
+    private PaginationBuilder listBuilder(List<Text> list, Text header){
         PaginationService pagServ = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
         PaginationBuilder builder = pagServ.builder();
-        builder.contents(list).title(Texts.of(header))
+        builder.contents(list).title(header)
                 .paddingString(Strings.getInstance().getStrings().get("listPadding"));
         return builder;
     }

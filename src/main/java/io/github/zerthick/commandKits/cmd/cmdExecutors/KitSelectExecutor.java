@@ -25,6 +25,7 @@ import io.github.zerthick.commandKits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.ArgumentParseException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
@@ -66,8 +67,8 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                 }
                 return CommandResult.success();
             }
+            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
         }
-
         return CommandResult.empty();
     }
 }

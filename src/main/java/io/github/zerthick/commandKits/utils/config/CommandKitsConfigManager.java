@@ -84,9 +84,9 @@ public class CommandKitsConfigManager {
             List<String> commandList = new LinkedList<>();
             commandList.add("minecraft:me I used the example kit!");
             commandList.add("$minecraft:tell {PLAYER_NAME} You used the example kit!");
-            exampleKitNode.getNode("commands").setComment("List containing commands that will be executed by this kit" +
-                    " commands starting with \'$\' will be executed by the console, otherwise they will be executed by" +
-                    " the player, \'%p\' will be replaced a runtime with the executing player's name")
+            exampleKitNode.getNode("commands").setComment("List containing commands that will be executed by this kit." +
+                    " Commands starting with \'$\' will be executed by the console, otherwise they will be executed by" +
+                    " the player, {PLAYER_NAME} will be replaced at runtime with the executing player's name")
                     .setValue(commandList);
         });
         config = configManager.getConfig();

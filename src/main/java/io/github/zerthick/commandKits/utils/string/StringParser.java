@@ -54,13 +54,19 @@ public class StringParser {
     }
 
     public static Boolean parseRequirement(Player player, String key, String comparison){
-        if (key.startsWith("KEYS_")){
+        if (key.equalsIgnoreCase("permission")){
+            return player.hasPermission(comparison);
+        } else if (key.equalsIgnoreCase("PLAYER_NAME")){
+            return player.getName().equalsIgnoreCase(comparison);
+        } else if (key.equalsIgnoreCase("PLAYER_UUID")) {
+            return player.getUniqueId().toString().equals(comparison);
+        } else if (key.equalsIgnoreCase("WORLD_NAME")){
+            return player.getWorld().getName().equalsIgnoreCase(comparison);
+        } else if (key.equalsIgnoreCase("WORLD_UUID")) {
+            return player.getWorld().getUniqueId().toString().equals(comparison);
+        } else if (key.startsWith("KEYS_")) {
             String cleanedKey = key.replace("KEYS_", "");
             return parseDataRequirement(player, cleanedKey, comparison.replaceAll("\\s",""));
-        } else if (key.equals("permission")){
-            return player.hasPermission(comparison);
-        } else if (key.equals("world")){
-            return player.getWorld().getName().equalsIgnoreCase(comparison);
         }
         return false;
     }

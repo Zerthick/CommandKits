@@ -36,7 +36,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 
-@Plugin(id = "CmdKits", name = "Command Kits", version = "0.0.1")
+@Plugin(id = "CmdKits", name = "Command Kits", version = "0.1.1")
 public class CommandKitsMain {
 
     @Inject
