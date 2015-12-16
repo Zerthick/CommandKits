@@ -19,12 +19,24 @@
 
 package io.github.zerthick.commandKits.cmd.cmdExecutors;
 
+import io.github.zerthick.commandKits.cmdKit.CommandKit;
+import io.github.zerthick.commandKits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationService;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Chase on 12/15/2015.
@@ -37,6 +49,34 @@ public class KitListExecutor extends AbstractCmdExecutor implements CommandExecu
 
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-        return null;
+        Map<String, CommandKit> kits = plugin.getKitManager().getKits();
+        List<Text> outputList = new LinkedList<>();
+
+        if(src instanceof Player) {
+            Player player = (Player) src;
+
+            kits.values().stream().filter(kit -> kit.hasPermission(player)).forEach(kit -> {
+                if (kit.hasRequirements(player)) {
+                    outputList.add(Texts.of(TextColors.GREEN, kit.getName()));
+                } else {
+                    outputList.add(Texts.of(TextColors.RED, kit.getName()));
+                }
+            });
+
+            if (outputList.isEmpty()){
+                outputList.add(Texts.of(Strings.getInstance().getStrings().get("emptyList")));
+            }
+
+            listBuilder(outputList).sendTo(src);
+        }
+        return CommandResult.success();
+    }
+
+    private PaginationBuilder listBuilder(List<Text> list){
+        PaginationService pagServ = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
+        PaginationBuilder builder = pagServ.builder();
+        builder.contents(list).title(Texts.of(Strings.getInstance().getStrings().get("listHeader")))
+                .paddingString(Strings.getInstance().getStrings().get("listPadding"));
+        return builder;
     }
 }

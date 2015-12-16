@@ -20,7 +20,9 @@
 package io.github.zerthick.commandKits.cmd;
 
 import io.github.zerthick.commandKits.CommandKitsMain;
+import io.github.zerthick.commandKits.cmd.cmdExecutors.KitListExecutor;
 import io.github.zerthick.commandKits.cmd.cmdExecutors.KitSelectExecutor;
+import io.github.zerthick.commandKits.cmd.cmdExecutors.PluginInfoExecutor;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -42,12 +44,29 @@ public class CommandKitsCommandRegister {
     }
 
     public void registerCmds() {
+
+        //ck pluginInfo
+        CommandSpec pluginInfoCommand = CommandSpec.builder()
+                .description(Texts.of("/ck pluginInfo"))
+                .permission("commandKits.command.pluginInfo")
+                .executor(new PluginInfoExecutor(container))
+                .build();
+
+        //ck list
+        CommandSpec kitListCommand = CommandSpec.builder()
+                .description(Texts.of("/ck list"))
+                .permission("commandKits.command.list")
+                .executor(new KitListExecutor(container))
+                .build();
+
         // ck <KitName>
         CommandSpec kitSelectCommand = CommandSpec.builder()
                 .description(Texts.of("/ck <kitName>"))
-                .permission("commandKits.command")
+                .permission("commandKits.command.select")
                 .arguments(GenericArguments.optional(GenericArguments.string(Texts.of("kitName"))))
                 .executor(new KitSelectExecutor(container))
+                .child(kitListCommand,"list", "ls" )
+                .child(pluginInfoCommand, "pluginInfo")
                 .build();
 
         game.getCommandManager().register(container.getInstance().get(),
