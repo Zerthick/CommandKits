@@ -38,9 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Chase on 12/15/2015.
- */
 public class KitListExecutor extends AbstractCmdExecutor implements CommandExecutor {
 
     public KitListExecutor(PluginContainer pluginContainer) {
