@@ -1,5 +1,5 @@
-# Graveyards
-Graveyards is a simple spawnpoint defining plugin. When players die, they respawn at the nearest graveyard.
+# Command Kits
+Command Kits is a simple yet flexible command kit plugin. Groups of commands called "kits" can be defined in the plugin config file.  Players can then execute these kits all at once with one command.  Requirments can also be set on the kits to only allow players to execute them under certain circumstances. 
 
 You can check out the Command Kits Sponge Forum post [here](https://forums.spongepowered.org/t/wip-graveyards-v0-1-0-pre-defined-spawnpoints-for-players/9575 "Command Kits Forum Post")!
  
