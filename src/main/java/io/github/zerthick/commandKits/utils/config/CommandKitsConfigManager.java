@@ -52,6 +52,16 @@ public class CommandKitsConfigManager {
 
         configManager = ZConfigManager.getInstance();
         configManager.setup(configFilePath, configLoader, logger, config -> {
+
+            CommentedConfigurationNode stringsNode = config.getNode("strings");
+            stringsNode.getNode("permissionDenial").setComment("Message when a player does not have permission to use a kit")
+                    .setValue("You don't have permission to use that command kit!");
+            stringsNode.getNode("requirementDenial").setComment("Message when a player does not meet all the requirements" +
+                    " to use a kit").setValue("You don't meet all the requirements to use this command kit!" +
+                    " Use /ck info <kitName> to view all the requirements");
+            stringsNode.getNode("unknownKit").setComment("Message when a player enters a kit that does not exist")
+                    .setValue("That command kit does not exist!");
+
             CommentedConfigurationNode exampleKitNode = config.getNode("kits", "Example");
             exampleKitNode.getNode("name").setComment("This is the name of the kit that will be used in the /kc command")
                     .setValue("Example");
@@ -85,5 +95,17 @@ public class CommandKitsConfigManager {
             logger.error("Error loading kits from config! Error: " + e);
         }
         return kits;
+    }
+
+    public Map<String, String> loadStrings() {
+        Set<Object> keySet = config.getNode("strings").getChildrenMap().keySet();
+        Map<String, String> strings = new HashMap<>();
+
+        for(Object key : keySet){
+            String string = config.getNode("strings", key).getString();
+            strings.put(key.toString(), string);
+        }
+
+        return strings;
     }
 }

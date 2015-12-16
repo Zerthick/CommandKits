@@ -42,14 +42,15 @@ public class CommandKitsCommandRegister {
     }
 
     public void registerCmds() {
-        // ck
-        CommandSpec graveyardCommand = CommandSpec.builder()
-                .description(Texts.of("/ck [kitName]"))
+        // ck <KitName>
+        CommandSpec kitSelectCommand = CommandSpec.builder()
+                .description(Texts.of("/ck <kitName>"))
                 .permission("commandKits.command")
                 .arguments(GenericArguments.optional(GenericArguments.string(Texts.of("kitName"))))
                 .executor(new KitSelectExecutor(container))
                 .build();
+
         game.getCommandManager().register(container.getInstance().get(),
-                graveyardCommand, "commandKits", "ck");
+                kitSelectCommand, "commandKits", "ck");
     }
 }

@@ -21,6 +21,7 @@ package io.github.zerthick.commandKits.cmd.cmdExecutors;
 
 import io.github.zerthick.commandKits.cmdKit.CommandKit;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
+import io.github.zerthick.commandKits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -52,19 +53,21 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                 if(kitManager.isKit(kitName)){
                     CommandKit kit = kitManager.getKit(kitName);
                     if(kit.hasPermission(player)){
-                        Map<String, Boolean> requirementsMap = kit.getRequirementsMap(player);
-                        if(!requirementsMap.containsValue(false)){
+                        if(kit.hasRequirements(player)) {
                             kit.executeCommands(player);
+                        } else {
+                            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
                         }
+                    } else {
+                        src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
                     }
+                } else {
+                    src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
                 }
-            } else {
-                src.sendMessage(Texts.of(TextColors.DARK_GREEN, container.getName(),
-                        TextColors.GREEN, " version: ", TextColors.DARK_GREEN,
-                        container.getVersion(), TextColors.GREEN, " by ",
-                        TextColors.DARK_GREEN, "Zerthick"));
+                return CommandResult.success();
             }
         }
-        return CommandResult.success();
+
+        return CommandResult.empty();
     }
 }

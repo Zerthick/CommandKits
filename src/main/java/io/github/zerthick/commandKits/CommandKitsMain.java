@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import io.github.zerthick.commandKits.cmd.CommandKitsCommandRegister;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
 import io.github.zerthick.commandKits.utils.config.CommandKitsConfigManager;
+import io.github.zerthick.commandKits.utils.string.Strings;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
@@ -80,6 +81,9 @@ public class CommandKitsMain {
 
         //Load kits from config
         kitManager = new CommandKitManager(configManager.loadKits());
+
+        //Load strings from config
+        Strings.getInstance().setUp(configManager.loadStrings());
 
         // Register Commands
         CommandKitsCommandRegister commandRegister = new CommandKitsCommandRegister(
