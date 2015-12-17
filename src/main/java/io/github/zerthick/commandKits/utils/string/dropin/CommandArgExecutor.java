@@ -25,9 +25,32 @@ public class CommandArgExecutor implements DropinExecutor{
     @Override
     public String execute(Player player, String[] args) {
         String operation = args[0].replace("ARGS_", "");
-        int index = Integer.parseInt(operation);
-        if( index < args.length){
-            return args[index];
+        if(operation.equals("*")){ // Wildcard ARGS_*
+            StringBuilder sb = new StringBuilder();
+            for(int i = 1; i < args.length -1; i++){
+                sb.append(args[i]).append(" ");
+            }
+            sb.append(args[args.length-1]);
+            return sb.toString();
+        } else if (operation.contains("-")) { // Range ARGS_lower-upper
+            int dashIndex = operation.indexOf('-');
+            String lowerBound = operation.substring(0, dashIndex);
+            String upperBound = operation.substring(dashIndex + 1);
+            int lower = lowerBound.equals("*") ? 1 : Integer.parseInt(lowerBound);
+            int upper = upperBound.endsWith("*") ? args.length-1 : Integer.parseInt(upperBound);
+            if( lower <= upper && lower >= 1 && upper < args.length){
+                StringBuilder sb = new StringBuilder();
+                for(int i = lower; i < upper; i++){
+                    sb.append(args[i]).append(" ");
+                }
+                sb.append(args[upper]);
+                return sb.toString();
+            }
+        } else { // Singe Index AGRS_index
+            int index = Integer.parseInt(operation);
+            if (index < args.length) {
+                return args[index];
+            }
         }
         return args[0];
     }

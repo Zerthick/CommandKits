@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class DropinEngine {
 
@@ -35,6 +36,7 @@ public class DropinEngine {
             put("WORLD_NAME", (player, args) -> player.getWorld().getName());
             put("WORLD_UUID", (player, args) -> player.getWorld().getUniqueId().toString());
             put("KEYS_", new DataKeyExecutor());
+            put("ARGS_", new CommandArgExecutor());
         }
     };
 
@@ -50,6 +52,9 @@ public class DropinEngine {
 
             if(key.startsWith("KEYS_")){ //Data key
                 result = dropinMap.get("KEYS_").execute(player, new String[] {key});
+            } else if(key.startsWith("ARGS_")) { //Command key
+                result = dropinMap.get("ARGS_").execute(player, Stream.of(new String[] {key}, args).flatMap(Stream::of)
+                        .toArray(String[]::new));
             } else if (dropinMap.containsKey(key)){ //Vanilla Dropin
                 result = dropinMap.get(key).execute(player, args);
             }
