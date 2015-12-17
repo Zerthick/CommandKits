@@ -33,6 +33,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,6 +49,7 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
         if(src instanceof Player){
             Player player = (Player)src;
             Optional<String> optionalKitName = args.getOne("kitName");
+            Optional<String> optionalArgs = args.getOne("args");
             if(optionalKitName.isPresent()){
                 String kitName = optionalKitName.get().toUpperCase();
                 CommandKitManager kitManager = plugin.getKitManager();
@@ -55,7 +57,11 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                     CommandKit kit = kitManager.getKit(kitName);
                     if(kit.hasPermission(player)){
                         if(kit.hasRequirements(player)) {
-                            kit.executeCommands(player);
+                            String[] argArray = new String[0];
+                            if(optionalArgs.isPresent()){
+                                argArray = optionalArgs.get().split(" ");
+                            }
+                            kit.executeCommands(player, argArray);
                         } else {
                             src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
                         }

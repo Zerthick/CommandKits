@@ -68,11 +68,12 @@ public class CommandKitsCommandRegister {
                 .executor(new KitListExecutor(container))
                 .build();
 
-        // ck <KitName>
+        // ck <KitName> [args]
         CommandSpec kitSelectCommand = CommandSpec.builder()
                 .description(Texts.of("/ck <kitName>"))
                 .permission("commandKits.command.select")
-                .arguments(GenericArguments.optional(GenericArguments.string(Texts.of("kitName"))))
+                .arguments(GenericArguments.string(Texts.of("kitName")),
+                        GenericArguments.optional(GenericArguments.remainingJoinedStrings(Texts.of("args"))))
                 .executor(new KitSelectExecutor(container))
                 .child(kitInfoCommand, "info")
                 .child(kitListCommand,"list", "ls" )

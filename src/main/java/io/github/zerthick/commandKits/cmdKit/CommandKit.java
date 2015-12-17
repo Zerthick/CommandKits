@@ -81,9 +81,9 @@ public class CommandKit {
         return true;
     }
 
-    public void executeCommands(Player player){
+    public void executeCommands(Player player, String[] args){
         for(String command : commands){
-            String parsedCommand = StringParser.parseCommand(player, command);
+            String parsedCommand = StringParser.parseCommand(player, command, args);
             if(parsedCommand.startsWith("$")){
                 Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), parsedCommand.substring(1));
             } else {

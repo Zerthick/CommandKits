@@ -20,37 +20,15 @@
 package io.github.zerthick.commandKits.utils.string;
 
 import io.github.zerthick.commandKits.utils.string.data.DataConverter;
+import io.github.zerthick.commandKits.utils.string.dropin.DropinEngine;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StringParser {
 
-    public static String parseCommand(Player player, String command){
-        String parsedCommand = command;
-        Pattern regex = Pattern.compile("\\{(.*?)\\}");
-        Matcher matcher =  regex.matcher(command);
-        while (matcher.find()){
-            String key = matcher.group(1);
-            if (key.equalsIgnoreCase("PLAYER_NAME")){
-                parsedCommand = parsedCommand.replace('{' + key + '}', player.getName());
-            } else if (key.equalsIgnoreCase("PLAYER_UUID")) {
-                parsedCommand = parsedCommand.replace('{' + key + '}', player.getUniqueId().toString());
-            } else if (key.equalsIgnoreCase("WORLD_NAME")) {
-                parsedCommand = parsedCommand.replace('{' + key  + '}', player.getWorld().getName());
-            } else if (key.equalsIgnoreCase("WORLD_UUID")) {
-                parsedCommand = parsedCommand.replace('{' + key + '}', player.getWorld().getUniqueId().toString());
-            } else if (key.startsWith("KEYS_")){
-                String cleanedKey = key.replace("KEYS_", "");
-                Optional<?> optionalValue = DataConverter.convertStringToDataValue(player, cleanedKey);
-                if(optionalValue.isPresent()){
-                    parsedCommand = parsedCommand.replace('{' + key + '}', optionalValue.get().toString());
-                }
-            }
-        }
-        return parsedCommand;
+    public static String parseCommand(Player player, String command, String[] args){
+        return DropinEngine.replaceDropins(command, player, args);
     }
 
     public static Boolean parseRequirement(Player player, String key, String comparison){

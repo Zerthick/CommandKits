@@ -21,6 +21,7 @@ package io.github.zerthick.commandKits.utils.config;
 
 import com.google.common.reflect.TypeToken;
 import io.github.zerthick.commandKits.cmdKit.CommandKit;
+import io.github.zerthick.commandKits.utils.config.zconfig.ZConfigManager;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
