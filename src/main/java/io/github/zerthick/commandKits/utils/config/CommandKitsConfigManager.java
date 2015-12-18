@@ -21,10 +21,12 @@ package io.github.zerthick.commandKits.utils.config;
 
 import com.google.common.reflect.TypeToken;
 import io.github.zerthick.commandKits.cmdKit.CommandKit;
+import io.github.zerthick.commandKits.cmdKit.CommandKitRequirement;
 import io.github.zerthick.commandKits.utils.config.zconfig.ZConfigManager;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
 
@@ -50,10 +52,13 @@ public class CommandKitsConfigManager {
 
     public void setUp(Path configFilePath, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger){
         TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(CommandKit.class), new CommandKitSerializer());
+        TypeSerializers.getDefaultSerializers()
+                .registerType(TypeToken.of(CommandKitRequirement.class), new CommandKitRequirementSerializer());
 
         configManager = ZConfigManager.getInstance();
         configManager.setup(configFilePath, configLoader, logger, config -> {
 
+            //String Data
             CommentedConfigurationNode stringsNode = config.getNode("strings");
             stringsNode.getNode("permissionDenial").setComment("Message when a player does not have permission to use a kit")
                     .setValue("You don't have permission to use that command kit!");
@@ -73,15 +78,25 @@ public class CommandKitsConfigManager {
                     " /ck info <kitName>")
                     .setValue("Requirements:");
 
+            //Kit Data
             CommentedConfigurationNode exampleKitNode = config.getNode("kits", "Example");
             exampleKitNode.getNode("name").setComment("This is the name of the kit that will be used in the /kc command")
                     .setValue("Example");
             exampleKitNode.getNode("description").setComment("This is the description that will be returned" +
                     " by the /kc info command").setValue("This is an example kit");
+
+            //Requirements
             exampleKitNode.getNode("requirements", "permission").setComment("This is the permission required to run" +
                     " /kc on this kit").setValue("commandKits.example");
-            exampleKitNode.getNode("requirements", "KEYS_EXPERIENCE_LEVEL").setComment("This requirement specifies that the player" +
-                    " requires 5 enchanting levels to get this kit").setValue(">=5");
+            CommentedConfigurationNode exampleRequirementNode = exampleKitNode.getNode("requirements", "ExampleRequirement");
+            exampleRequirementNode.getNode("name").setComment("Human-friendly name for requirement")
+                    .setValue("Example Requirement");
+            exampleRequirementNode.getNode("description").setComment("Description of requirement")
+                    .setValue("This requirement specifies that the player must have at" +
+                            " least 5 enchanting levels to use this kit.");
+            exampleRequirementNode.getNode("rule").setValue("{KEYS_EXPERIENCE_LEVEL} >= 5");
+
+            //Commands
             List<String> commandList = new LinkedList<>();
             commandList.add("minecraft:me I used the example kit!");
             commandList.add("$minecraft:tell {PLAYER_NAME} You used the example kit!");

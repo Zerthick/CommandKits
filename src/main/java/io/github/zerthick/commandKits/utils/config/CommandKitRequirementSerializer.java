@@ -20,41 +20,25 @@
 package io.github.zerthick.commandKits.utils.config;
 
 import com.google.common.reflect.TypeToken;
-import io.github.zerthick.commandKits.cmdKit.CommandKit;
 import io.github.zerthick.commandKits.cmdKit.CommandKitRequirement;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 
-import java.util.*;
+public class CommandKitRequirementSerializer implements TypeSerializer<CommandKitRequirement>{
 
-public class CommandKitSerializer implements TypeSerializer<CommandKit>{
     @Override
-    public CommandKit deserialize(TypeToken type, ConfigurationNode value) throws ObjectMappingException {
-
+    public CommandKitRequirement deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
         final String name = value.getNode("name").getString();
         final String description = value.getNode("description").getString("No description available!");
-        final String permission = value.getNode("requirements", "permission").getString("");
-        final Set<CommandKitRequirement> requirements = new HashSet<>();
-        Set<Object> keySet = value.getNode("requirements").getChildrenMap().keySet();
-        for(Object o : keySet){
-            if(!o.toString().equals("permission")) {
-                CommandKitRequirement requirement = value.getNode("requirements", o)
-                        .getValue(TypeToken.of(CommandKitRequirement.class));
-                requirements.add(requirement);
-            }
-        }
-        final List<String> commands = value.getNode("commands").getList(TypeToken.of(String.class));
-
-        return new CommandKit(name, description, permission, requirements, commands);
+        final String rule = value.getNode("rule").getString();
+        return new CommandKitRequirement(name, description, rule);
     }
 
     @Override
-    public void serialize(TypeToken<?> type, CommandKit obj, ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(TypeToken<?> type, CommandKitRequirement obj, ConfigurationNode value) throws ObjectMappingException {
         value.getNode("name").setValue(obj.getName());
         value.getNode("description").setValue(obj.getDescription());
-        value.getNode("requirements", "permission").setValue(obj.getPermission());
-        value.getNode("requirements").setValue(obj.getRequirements());
-        value.getNode("commands").setValue(obj.getCommands());
+        value.getNode("rule").setValue(obj.getRule());
     }
 }

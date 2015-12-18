@@ -31,10 +31,38 @@ public class DropinEngine {
 
     private static Map<String, DropinExecutor> dropinMap = new HashMap<String, DropinExecutor>(){
         {
-            put("PLAYER_NAME", (player, args) -> player.getName());
-            put("PLAYER_UUID", (player, args) -> player.getUniqueId().toString());
-            put("WORLD_NAME", (player, args) -> player.getWorld().getName());
-            put("WORLD_UUID", (player, args) -> player.getWorld().getUniqueId().toString());
+            put("PLAYER_NAME", (player, args) -> {
+                if(args.length > 0){
+                    if(args[0].equals("useTypeFlag")){
+                        return "\"" + player.getName() + "\"";
+                    }
+                }
+                return player.getName();
+            });
+            put("PLAYER_UUID", (player, args) -> {
+                if(args.length > 0){
+                    if(args[0].equals("useTypeFlag")){
+                        return "\"" + player.getUniqueId().toString() + "\"";
+                    }
+                }
+                return player.getUniqueId().toString();
+            });
+            put("WORLD_NAME", (player, args) -> {
+                if(args.length > 0){
+                    if(args[0].equals("useTypeFlag")){
+                        return "\"" + player.getWorld().getName()+ "\"";
+                    }
+                }
+                return player.getWorld().getName();
+            });
+            put("WORLD_UUID", (player, args) -> {
+                if(args.length > 0){
+                    if(args[0].equals("useTypeFlag")){
+                        return "\"" + player.getWorld().getUniqueId().toString() + "\"";
+                    }
+                }
+                return player.getWorld().getUniqueId().toString();
+            });
             put("KEYS_", new DataKeyExecutor());
             put("ARGS_", new CommandArgExecutor());
         }
@@ -51,7 +79,8 @@ public class DropinEngine {
             String result = key;
 
             if(key.startsWith("KEYS_")){ //Data key
-                result = dropinMap.get("KEYS_").execute(player, new String[] {key});
+                result = dropinMap.get("KEYS_").execute(player, Stream.of(new String[] {key}, args).flatMap(Stream::of)
+                        .toArray(String[]::new));
             } else if(key.startsWith("ARGS_")) { //Command key
                 result = dropinMap.get("ARGS_").execute(player, Stream.of(new String[] {key}, args).flatMap(Stream::of)
                         .toArray(String[]::new));

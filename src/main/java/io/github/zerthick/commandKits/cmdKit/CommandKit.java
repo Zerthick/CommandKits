@@ -33,12 +33,14 @@ public class CommandKit {
 
     private final String name;
     private final String description;
-    private final Map<String, String> requirements;
+    private final String permission;
+    private final Set<CommandKitRequirement> requirements;
     private final List<String> commands;
 
-    public CommandKit(String name, String description, Map<String, String> requirements, List<String> commands) {
+    public CommandKit(String name, String description, String permission, Set<CommandKitRequirement> requirements, List<String> commands) {
         this.name = name;
         this.description = description;
+        this.permission = permission;
         this.requirements = requirements;
         this.commands = commands;
     }
@@ -51,7 +53,9 @@ public class CommandKit {
         return description;
     }
 
-    public Map<String, String> getRequirements() {
+    public String getPermission() { return  permission; }
+
+    public Set<CommandKitRequirement> getRequirements() {
         return requirements;
     }
 
@@ -60,21 +64,12 @@ public class CommandKit {
     }
 
     public boolean hasPermission(Player player){
-        return !requirements.containsKey("permission") || player.hasPermission(requirements.get("permission"));
-    }
-
-    public Map<String,Boolean> getRequirementsMap(Player player) {
-        Map<String, Boolean> requirementsMap = new HashMap<>();
-
-        for(String key : requirements.keySet()){
-            requirementsMap.put(key, StringParser.parseRequirement(player, key, requirements.get(key)));
-        }
-        return requirementsMap;
+        return permission.isEmpty() || player.hasPermission(permission);
     }
 
     public boolean hasRequirements(Player player) {
-        for(String key : requirements.keySet()){
-            if(!StringParser.parseRequirement(player, key, requirements.get(key))){
+        for(CommandKitRequirement requirement : requirements){
+            if(!requirement.hasRequirement(player)){
                 return false;
             }
         }
@@ -97,6 +92,7 @@ public class CommandKit {
         return "CommandKit{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", permission='" + permission + '\'' +
                 ", requirements=" + requirements +
                 ", commands=" + commands +
                 '}';

@@ -19,11 +19,10 @@
 
 package io.github.zerthick.commandKits.utils.string;
 
-import io.github.zerthick.commandKits.utils.string.data.DataConverter;
 import io.github.zerthick.commandKits.utils.string.dropin.DropinEngine;
+import io.github.zerthick.commandKits.utils.string.expression.ExpressionParser;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
-
-import java.util.Optional;
 
 public class StringParser {
 
@@ -31,75 +30,10 @@ public class StringParser {
         return DropinEngine.replaceDropins(command, player, args);
     }
 
-    public static Boolean parseRequirement(Player player, String key, String comparison){
-        if (key.equalsIgnoreCase("permission")){
-            return player.hasPermission(comparison);
-        } else if (key.equalsIgnoreCase("PLAYER_NAME")){
-            return player.getName().equalsIgnoreCase(comparison);
-        } else if (key.equalsIgnoreCase("PLAYER_UUID")) {
-            return player.getUniqueId().toString().equals(comparison);
-        } else if (key.equalsIgnoreCase("WORLD_NAME")){
-            return player.getWorld().getName().equalsIgnoreCase(comparison);
-        } else if (key.equalsIgnoreCase("WORLD_UUID")) {
-            return player.getWorld().getUniqueId().toString().equals(comparison);
-        } else if (key.startsWith("KEYS_")) {
-            String cleanedKey = key.replace("KEYS_", "");
-            return parseDataRequirement(player, cleanedKey, comparison.replaceAll("\\s",""));
-        }
-        return false;
+    public static Boolean parseRequirement(Player player, String requirementRule){
+        ExpressionParser.parseExpression(DropinEngine.replaceDropins(requirementRule, player, new String[] {"useTypeFlag"}));
+        return true;
+        //return ExpressionParser.parseExpression(DropinEngine.replaceDropins(requirementRule, player, new String[0]));
     }
 
-    private static Boolean parseDataRequirement(Player player, String key, String comparison){
-
-        Optional<?> optionalValue = DataConverter.convertStringToDataValue(player, key);
-        boolean result = false;
-
-        if (optionalValue.isPresent()) {
-
-            Object value = optionalValue.get();
-
-            if (value instanceof Boolean) {
-                if(comparison.startsWith("=")){
-                    result = value.equals(Boolean.parseBoolean(comparison.substring(1)));
-                } else if(comparison.startsWith("!=")){
-                    result = !value.equals(Boolean.parseBoolean(comparison.substring(2)));
-                }
-            } else if (value instanceof Integer) {
-                if(comparison.startsWith("=")){
-                    result = value.equals(Integer.parseInt(comparison.substring(1)));
-                } else if(comparison.startsWith("!=")){
-                    result =  !value.equals(Integer.parseInt(comparison.substring(2)));
-                } else if(comparison.startsWith("<=")){
-                    result = (Integer)value <= Integer.parseInt(comparison.substring(2));
-                } else if(comparison.startsWith(">=")){
-                    result = (Integer)value >= Integer.parseInt(comparison.substring(2));
-                } else if(comparison.startsWith("<")){
-                    result = (Integer)value < Integer.parseInt(comparison.substring(1));
-                } else if(comparison.startsWith(">")){
-                    result = (Integer)value > Integer.parseInt(comparison.substring(1));
-                }
-            } else if (value instanceof Double) {
-                if(comparison.startsWith("=")){
-                    result = value.equals(Double.parseDouble(comparison.substring(1)));
-                } else if(comparison.startsWith("!=")){
-                    result =  !value.equals(Double.parseDouble(comparison.substring(2)));
-                } else if(comparison.startsWith("<=")){
-                    result = (Double)value <= Double.parseDouble(comparison.substring(2));
-                } else if(comparison.startsWith(">=")){
-                    result = (Double)value >= Double.parseDouble(comparison.substring(2));
-                } else if(comparison.startsWith("<")){
-                    result = (Double)value < Double.parseDouble(comparison.substring(1));
-                } else if(comparison.startsWith(">")){
-                    result = (Double)value > Double.parseDouble(comparison.substring(1));
-                }
-            } else {
-                if(comparison.startsWith("=")){
-                    result = value.toString().equals(comparison.substring(1));
-                } else if(comparison.startsWith("!=")){
-                    result = !value.toString().equals(comparison.substring(2));
-                }
-            }
-        }
-        return result;
-    }
 }

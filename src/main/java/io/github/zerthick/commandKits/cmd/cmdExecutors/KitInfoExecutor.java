@@ -22,6 +22,7 @@ package io.github.zerthick.commandKits.cmd.cmdExecutors;
 
 import io.github.zerthick.commandKits.cmdKit.CommandKit;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
+import io.github.zerthick.commandKits.cmdKit.CommandKitRequirement;
 import io.github.zerthick.commandKits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -36,10 +37,8 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecutor{
 
@@ -60,18 +59,14 @@ public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecu
                     CommandKit kit = kitManager.getKit(kitName);
                     if(kit.hasPermission(player)){
                         List<Text> outputList = new LinkedList<>();
-                        outputList.add(Texts.of(kit.getDescription()));
-                        Map<String, String> requirements = kit.getRequirements();
+                        outputList.add(Texts.of(kit.getDescription(), "\n"));
+                        Set<CommandKitRequirement> requirements = kit.getRequirements();
                         if(!requirements.isEmpty()){
-                            outputList.add(Texts.of("\n" + Strings.getInstance().getStrings().get("requirementHeader")));
-                            Map<String, Boolean> requirementsMap = kit.getRequirementsMap(player);
-                            requirements.keySet().stream().filter(key -> !key.equals("permission")).forEach(key -> {
-                                if (requirementsMap.get(key)) {
-                                    outputList.add(Texts.of(TextColors.GREEN, key, ": ", requirements.get(key)));
-                                } else {
-                                    outputList.add(Texts.of(TextColors.RED, key, ": ", requirements.get(key)));
-                                }
-                            });
+                            outputList.add(Texts.of(Strings.getInstance().getStrings().get("requirementHeader")));
+                            outputList.addAll(requirements.stream().filter(requirement ->
+                                    requirement.hasRequirement(player)).map(requirement ->
+                                        Texts.of(TextColors.GREEN, requirement.getName(), ": ",
+                                        TextColors.WHITE, requirement.getDescription())).collect(Collectors.toList()));
                         }
                         Text header;
                         if(kit.hasRequirements(player)){
