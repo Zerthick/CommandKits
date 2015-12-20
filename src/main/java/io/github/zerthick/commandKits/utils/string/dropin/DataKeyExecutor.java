@@ -34,7 +34,7 @@ public class DataKeyExecutor implements DropinExecutor{
             if (args.length > 1) {
                 if (args[1].equals("useTypeFlag")) {
                     if (optionalValue.get() instanceof String){
-                        return "\"" + optionalValue.get().toString() + "\"";
+                        return "'" + optionalValue.get().toString() + "'";
                     }
                 }
             }

@@ -51,7 +51,6 @@ public class DataConverter {
             put("IS_SNEAKING", Keys.IS_SNEAKING);
             put("IS_SPRINTING", Keys.IS_SPRINTING);
             put("IS_WET", Keys.IS_WET);
-            put("IS_WHITELISTED", Keys.IS_WHITELISTED);
             put("LAST_DAMAGE", Keys.LAST_DAMAGE);
             put("MAX_HEALTH", Keys.MAX_HEALTH);
             put("REMAINING_AIR", Keys.REMAINING_AIR);

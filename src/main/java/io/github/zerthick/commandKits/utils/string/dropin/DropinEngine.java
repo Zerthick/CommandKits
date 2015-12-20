@@ -34,7 +34,7 @@ public class DropinEngine {
             put("PLAYER_NAME", (player, args) -> {
                 if(args.length > 0){
                     if(args[0].equals("useTypeFlag")){
-                        return "\"" + player.getName() + "\"";
+                        return "'" + player.getName() + "'";
                     }
                 }
                 return player.getName();
@@ -42,7 +42,7 @@ public class DropinEngine {
             put("PLAYER_UUID", (player, args) -> {
                 if(args.length > 0){
                     if(args[0].equals("useTypeFlag")){
-                        return "\"" + player.getUniqueId().toString() + "\"";
+                        return "'" + player.getUniqueId().toString() + "'";
                     }
                 }
                 return player.getUniqueId().toString();
@@ -50,7 +50,7 @@ public class DropinEngine {
             put("WORLD_NAME", (player, args) -> {
                 if(args.length > 0){
                     if(args[0].equals("useTypeFlag")){
-                        return "\"" + player.getWorld().getName()+ "\"";
+                        return "'" + player.getWorld().getName()+ "'";
                     }
                 }
                 return player.getWorld().getName();
@@ -58,7 +58,7 @@ public class DropinEngine {
             put("WORLD_UUID", (player, args) -> {
                 if(args.length > 0){
                     if(args[0].equals("useTypeFlag")){
-                        return "\"" + player.getWorld().getUniqueId().toString() + "\"";
+                        return "'" + player.getWorld().getUniqueId().toString() + "'";
                     }
                 }
                 return player.getWorld().getUniqueId().toString();

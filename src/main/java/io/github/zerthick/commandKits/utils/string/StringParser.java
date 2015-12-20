@@ -31,8 +31,7 @@ public class StringParser {
     }
 
     public static Boolean parseRequirement(Player player, String requirementRule){
-        ExpressionParser.parseExpression(DropinEngine.replaceDropins(requirementRule, player, new String[] {"useTypeFlag"}));
-        return true;
+        return ExpressionParser.parseExpression(DropinEngine.replaceDropins(requirementRule, player, new String[] {"useTypeFlag"}));
     }
 
 }
