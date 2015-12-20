@@ -65,6 +65,7 @@ public class DropinEngine {
             });
             put("KEYS_", new DataKeyExecutor());
             put("ARGS_", new CommandArgExecutor());
+            put("PERM_", (player, args) -> String.valueOf(player.hasPermission(args[0].replace("PERM_", ""))));
         }
     };
 
@@ -77,14 +78,16 @@ public class DropinEngine {
         while (matcher.find()) {
             String key = matcher.group(1);
             String result = key;
-
             if(key.startsWith("KEYS_")){ //Data key
                 result = dropinMap.get("KEYS_").execute(player, Stream.of(new String[] {key}, args).flatMap(Stream::of)
                         .toArray(String[]::new));
             } else if(key.startsWith("ARGS_")) { //Command key
                 result = dropinMap.get("ARGS_").execute(player, Stream.of(new String[] {key}, args).flatMap(Stream::of)
                         .toArray(String[]::new));
-            } else if (dropinMap.containsKey(key)){ //Vanilla Dropin
+            } else if(key.startsWith("PERM_")) { //Permission key
+                result = dropinMap.get("PERM_").execute(player, Stream.of(new String[]{key}, args).flatMap(Stream::of)
+                        .toArray(String[]::new));
+            } else if(dropinMap.containsKey(key)){ //Vanilla Dropin
                 result = dropinMap.get(key).execute(player, args);
             }
             processedString = processedString.replace('{' + key + '}', result);

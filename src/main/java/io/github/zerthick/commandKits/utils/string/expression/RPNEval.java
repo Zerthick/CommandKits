@@ -43,7 +43,7 @@ public class RPNEval {
                 return String.valueOf(Double.parseDouble(args[0]) + Double.parseDouble(args[1]));
             }
             // String concat
-            return args[0] +  args[1];
+            return args[1].substring(0, args[1].length()-1) +  args[0].substring(1);
         }),
         SUBTRACT(2, args -> String.valueOf(Double.parseDouble(args[0]) - Double.parseDouble(args[1]))),
         LESS(2, args -> String.valueOf(Double.parseDouble(args[0]) < Double.parseDouble(args[1]))),
@@ -112,6 +112,6 @@ public class RPNEval {
     }
 
     private interface Operation {
-        public String execute(String[] args);
+        String execute(String[] args);
     }
 }

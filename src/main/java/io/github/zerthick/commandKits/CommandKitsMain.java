@@ -36,7 +36,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 
-@Plugin(id = "CmdKits", name = "Command Kits", version = "0.2.1")
+@Plugin(id = "CmdKits", name = "Command Kits", version = "0.3.1")
 public class CommandKitsMain {
 
     @Inject
@@ -94,5 +94,15 @@ public class CommandKitsMain {
         getLogger().info(
                 instance.getName() + " version " + instance.getVersion()
                         + " enabled!");
+    }
+
+    public void reloadConfig(){
+        configManager.reload();
+
+        //Load kits from config
+        kitManager = new CommandKitManager(configManager.loadKits());
+
+        //Load strings from config
+        Strings.getInstance().setUp(configManager.loadStrings());
     }
 }

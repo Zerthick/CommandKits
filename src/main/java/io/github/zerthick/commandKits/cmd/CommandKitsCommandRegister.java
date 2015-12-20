@@ -20,10 +20,7 @@
 package io.github.zerthick.commandKits.cmd;
 
 import io.github.zerthick.commandKits.CommandKitsMain;
-import io.github.zerthick.commandKits.cmd.cmdExecutors.KitInfoExecutor;
-import io.github.zerthick.commandKits.cmd.cmdExecutors.KitListExecutor;
-import io.github.zerthick.commandKits.cmd.cmdExecutors.KitSelectExecutor;
-import io.github.zerthick.commandKits.cmd.cmdExecutors.PluginInfoExecutor;
+import io.github.zerthick.commandKits.cmd.cmdExecutors.*;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -45,13 +42,19 @@ public class CommandKitsCommandRegister {
     }
 
     public void registerCmds() {
-
         // ck info <KitName>
         CommandSpec kitInfoCommand = CommandSpec.builder()
                 .description(Texts.of("/ck kitInfo <kitName>"))
                 .permission("commandKits.command.kitInfo")
                 .arguments(GenericArguments.optional(GenericArguments.string(Texts.of("kitName"))))
                 .executor(new KitInfoExecutor(container))
+                .build();
+
+        //ck configReload
+        CommandSpec configReloadCommand = CommandSpec.builder()
+                .description(Texts.of("/ck reload"))
+                .permission("commandKits.command.reloadConfig")
+                .executor(new ConfigReloadExecutor(container))
                 .build();
 
         //ck pluginInfo
@@ -78,6 +81,7 @@ public class CommandKitsCommandRegister {
                 .child(kitInfoCommand, "info")
                 .child(kitListCommand,"list", "ls" )
                 .child(pluginInfoCommand, "pluginInfo")
+                .child(configReloadCommand, "reload", "reloadConfig")
                 .build();
 
         game.getCommandManager().register(container.getInstance().get(),

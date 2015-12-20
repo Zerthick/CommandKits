@@ -109,6 +109,11 @@ public class CommandKitsConfigManager {
         this.logger = logger;
     }
 
+    public void reload(){
+        configManager.loadConfig();
+        config = configManager.getConfig();
+    }
+
     public Map<String, CommandKit> loadKits() {
         Set<Object> keySet = config.getNode("kits").getChildrenMap().keySet();
         Map<String, CommandKit> kits = new HashMap<>();
