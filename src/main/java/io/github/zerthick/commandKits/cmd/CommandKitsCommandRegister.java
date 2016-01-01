@@ -25,7 +25,7 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 
 public class CommandKitsCommandRegister {
 
@@ -44,39 +44,39 @@ public class CommandKitsCommandRegister {
     public void registerCmds() {
         // ck info <KitName>
         CommandSpec kitInfoCommand = CommandSpec.builder()
-                .description(Texts.of("/ck kitInfo <kitName>"))
+                .description(Text.of("/ck kitInfo <kitName>"))
                 .permission("commandKits.command.kitInfo")
-                .arguments(GenericArguments.optional(GenericArguments.string(Texts.of("kitName"))))
+                .arguments(GenericArguments.optional(GenericArguments.string(Text.of("kitName"))))
                 .executor(new KitInfoExecutor(container))
                 .build();
 
         //ck configReload
         CommandSpec configReloadCommand = CommandSpec.builder()
-                .description(Texts.of("/ck reload"))
+                .description(Text.of("/ck reload"))
                 .permission("commandKits.command.reloadConfig")
                 .executor(new ConfigReloadExecutor(container))
                 .build();
 
         //ck pluginInfo
         CommandSpec pluginInfoCommand = CommandSpec.builder()
-                .description(Texts.of("/ck pluginInfo"))
+                .description(Text.of("/ck pluginInfo"))
                 .permission("commandKits.command.pluginInfo")
                 .executor(new PluginInfoExecutor(container))
                 .build();
 
         //ck list
         CommandSpec kitListCommand = CommandSpec.builder()
-                .description(Texts.of("/ck list"))
+                .description(Text.of("/ck list"))
                 .permission("commandKits.command.list")
                 .executor(new KitListExecutor(container))
                 .build();
 
         // ck <KitName> [args]
         CommandSpec kitSelectCommand = CommandSpec.builder()
-                .description(Texts.of("/ck <kitName>"))
+                .description(Text.of("/ck <kitName>"))
                 .permission("commandKits.command.select")
-                .arguments(GenericArguments.string(Texts.of("kitName")),
-                        GenericArguments.optional(GenericArguments.remainingJoinedStrings(Texts.of("args"))))
+                .arguments(GenericArguments.string(Text.of("kitName")),
+                        GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("args"))))
                 .executor(new KitSelectExecutor(container))
                 .child(kitInfoCommand, "info")
                 .child(kitListCommand,"list", "ls" )

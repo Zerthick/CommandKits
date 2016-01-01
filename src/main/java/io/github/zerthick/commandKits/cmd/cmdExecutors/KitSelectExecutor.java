@@ -25,16 +25,13 @@ import io.github.zerthick.commandKits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.ArgumentParseException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExecutor{
@@ -63,17 +60,17 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                             }
                             kit.executeCommands(player, argArray);
                         } else {
-                            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
+                            src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
                         }
                     } else {
-                        src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
+                        src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
                     }
                 } else {
-                    src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
+                    src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
                 }
                 return CommandResult.success();
             }
-            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
+            src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
         }
         return CommandResult.empty();
     }

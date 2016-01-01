@@ -31,7 +31,6 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.pagination.PaginationBuilder;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.LinkedList;
@@ -54,14 +53,14 @@ public class KitListExecutor extends AbstractCmdExecutor implements CommandExecu
 
             kits.values().stream().filter(kit -> kit.hasPermission(player)).forEach(kit -> {
                 if (kit.hasRequirements(player)) {
-                    outputList.add(Texts.of(TextColors.GREEN, kit.getName()));
+                    outputList.add(Text.of(TextColors.GREEN, kit.getName()));
                 } else {
-                    outputList.add(Texts.of(TextColors.RED, kit.getName()));
+                    outputList.add(Text.of(TextColors.RED, kit.getName()));
                 }
             });
 
             if (outputList.isEmpty()){
-                outputList.add(Texts.of(Strings.getInstance().getStrings().get("emptyList")));
+                outputList.add(Text.of(Strings.getInstance().getStrings().get("emptyList")));
             }
 
             listBuilder(outputList).sendTo(src);
@@ -72,7 +71,7 @@ public class KitListExecutor extends AbstractCmdExecutor implements CommandExecu
     private PaginationBuilder listBuilder(List<Text> list){
         PaginationService pagServ = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
         PaginationBuilder builder = pagServ.builder();
-        builder.contents(list).title(Texts.of(Strings.getInstance().getStrings().get("listHeader")))
+        builder.contents(list).title(Text.of(Strings.getInstance().getStrings().get("listHeader")))
                 .paddingString(Strings.getInstance().getStrings().get("listPadding"));
         return builder;
     }

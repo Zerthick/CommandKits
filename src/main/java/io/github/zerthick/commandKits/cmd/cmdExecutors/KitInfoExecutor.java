@@ -34,7 +34,6 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.pagination.PaginationBuilder;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.*;
@@ -59,31 +58,31 @@ public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecu
                     CommandKit kit = kitManager.getKit(kitName);
                     if(kit.hasPermission(player)){
                         List<Text> outputList = new LinkedList<>();
-                        outputList.add(Texts.of(kit.getDescription(), "\n"));
+                        outputList.add(Text.of(kit.getDescription(), "\n"));
                         Set<CommandKitRequirement> requirements = kit.getRequirements();
                         if(!requirements.isEmpty()){
-                            outputList.add(Texts.of(Strings.getInstance().getStrings().get("requirementHeader")));
+                            outputList.add(Text.of(Strings.getInstance().getStrings().get("requirementHeader")));
                             outputList.addAll(requirements.stream().filter(requirement ->
                                     requirement.hasRequirement(player)).map(requirement ->
-                                        Texts.of(TextColors.GREEN, requirement.getName(), ": ",
+                                        Text.of(TextColors.GREEN, requirement.getName(), ": ",
                                         TextColors.WHITE, requirement.getDescription())).collect(Collectors.toList()));
                         }
                         Text header;
                         if(kit.hasRequirements(player)){
-                            header = Texts.of(TextColors.GREEN, kit.getName());
+                            header = Text.of(TextColors.GREEN, kit.getName());
                         } else {
-                            header = Texts.of(TextColors.RED, kit.getName());
+                            header = Text.of(TextColors.RED, kit.getName());
                         }
                         listBuilder(outputList, header).sendTo(src);
                     } else {
-                        src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
+                        src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("permissionDenial")));
                     }
                 } else {
-                    src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
+                    src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
                 }
                 return CommandResult.success();
             }
-            src.sendMessage(Texts.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
+            src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("unknownKit")));
         }
 
         return CommandResult.empty();
