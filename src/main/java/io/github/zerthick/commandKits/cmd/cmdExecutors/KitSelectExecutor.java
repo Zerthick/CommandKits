@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -58,7 +58,7 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                             if(optionalArgs.isPresent()){
                                 argArray = optionalArgs.get().split(" ");
                             }
-                            kit.executeCommands(player, argArray);
+                            kit.execute(player, argArray);
                         } else {
                             src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
                         }

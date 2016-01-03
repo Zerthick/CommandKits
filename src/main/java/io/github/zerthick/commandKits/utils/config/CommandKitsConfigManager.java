@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -26,7 +26,6 @@ import io.github.zerthick.commandKits.utils.config.zconfig.ZConfigManager;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
 
@@ -37,8 +36,8 @@ public class CommandKitsConfigManager {
 
     private static ZConfigManager configManager;
     private static CommentedConfigurationNode config;
-    private  Logger logger;
     private static CommandKitsConfigManager instance = null;
+    private Logger logger;
     protected CommandKitsConfigManager(){
         //Singleton Design Pattern
     }
@@ -84,6 +83,8 @@ public class CommandKitsConfigManager {
                     .setValue("Example");
             exampleKitNode.getNode("description").setComment("This is the description that will be returned" +
                     " by the /kc info command").setValue("This is an example kit");
+            exampleKitNode.getNode("message").setComment("This message will be sent to the player on executing the kit")
+                    .setValue("&9You used the example kit!&f");
 
             //Requirements
             exampleKitNode.getNode("requirements", "permission").setComment("This is the permission required to run" +
@@ -104,6 +105,13 @@ public class CommandKitsConfigManager {
                     " Commands starting with \'$\' will be executed by the console, otherwise they will be executed by" +
                     " the player, {PLAYER_NAME} will be replaced at runtime with the executing player's name")
                     .setValue(commandList);
+
+            //Items
+            List<String> itemList = new LinkedList<>();
+            itemList.add("minecraft:diamond {KEYS_EXPERIENCE_LEVEL}");
+            exampleKitNode.getNode("items").setComment("List containing items that will be given to the player" +
+                    " when using this kit.  This particular item gives the player the number of diamonds equal to their" +
+                    " experience level").setValue(itemList);
         });
         config = configManager.getConfig();
         this.logger = logger;

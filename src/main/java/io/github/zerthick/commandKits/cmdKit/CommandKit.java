@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -22,23 +22,29 @@ package io.github.zerthick.commandKits.cmdKit;
 import io.github.zerthick.commandKits.utils.string.StringParser;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 public class CommandKit {
 
     private final String name;
     private final String description;
     private final String permission;
+    private final String message;
     private final Set<CommandKitRequirement> requirements;
     private final List<String> commands;
+    private final List<String> items;
 
-    public CommandKit(String name, String description, String permission, Set<CommandKitRequirement> requirements, List<String> commands) {
+    public CommandKit(String name, String description, String permission, String message, Set<CommandKitRequirement> requirements, List<String> commands, List<String> items) {
         this.name = name;
         this.description = description;
         this.permission = permission;
+        this.message = message;
         this.requirements = requirements;
         this.commands = commands;
+        this.items = items;
     }
 
     public String getName() {
@@ -51,12 +57,20 @@ public class CommandKit {
 
     public String getPermission() { return  permission; }
 
+    public String getMessage() {
+        return message;
+    }
+
     public Set<CommandKitRequirement> getRequirements() {
         return requirements;
     }
 
     public List<String> getCommands() {
         return commands;
+    }
+
+    public List<String> getItems() {
+        return items;
     }
 
     public boolean hasPermission(Player player){
@@ -72,14 +86,33 @@ public class CommandKit {
         return true;
     }
 
-    public void executeCommands(Player player, String[] args){
+    public void execute(Player player, String[] args) {
+        executeCommands(player, args);
+        executeItems(player, args);
+        executeMessage(player, args);
+    }
+
+    private void executeCommands(Player player, String[] args) {
         for(String command : commands){
-            String parsedCommand = StringParser.parseCommand(player, command, args);
+            String parsedCommand = StringParser.parseDropins(player, command, args);
             if(parsedCommand.startsWith("$")){
                 Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), parsedCommand.substring(1));
             } else {
                 Sponge.getGame().getCommandManager().process(player, parsedCommand);
             }
+        }
+    }
+
+    private void executeMessage(Player player, String[] args) {
+        String parsedMessage = StringParser.parseDropins(player, message, args);
+        player.sendMessage(TextSerializers.FORMATTING_CODE.deserialize(parsedMessage));
+    }
+
+    private void executeItems(Player player, String[] args) {
+        for (String item : items) {
+            String parsedItem = StringParser.parseDropins(player, item, args);
+            Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), "minecraft:give "
+                    + player.getName() + " " + parsedItem);
         }
     }
 
@@ -89,8 +122,10 @@ public class CommandKit {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", permission='" + permission + '\'' +
+                ", message='" + message + '\'' +
                 ", requirements=" + requirements +
                 ", commands=" + commands +
+                ", items=" + items +
                 '}';
     }
 }

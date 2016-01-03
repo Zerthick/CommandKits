@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -26,15 +26,20 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class CommandKitSerializer implements TypeSerializer<CommandKit>{
+
     @Override
     public CommandKit deserialize(TypeToken type, ConfigurationNode value) throws ObjectMappingException {
 
         final String name = value.getNode("name").getString();
         final String description = value.getNode("description").getString("No description available!");
         final String permission = value.getNode("requirements", "permission").getString("");
+        final String message = value.getNode("message").getString("");
         final Set<CommandKitRequirement> requirements = new HashSet<>();
         Set<Object> keySet = value.getNode("requirements").getChildrenMap().keySet();
         for(Object o : keySet){
@@ -44,9 +49,9 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
                 requirements.add(requirement);
             }
         }
-        final List<String> commands = value.getNode("commands").getList(TypeToken.of(String.class));
-
-        return new CommandKit(name, description, permission, requirements, commands);
+        final List<String> commands = value.getNode("commands").getList(TypeToken.of(String.class), new LinkedList<>());
+        final List<String> items = value.getNode("items").getList(TypeToken.of(String.class), new LinkedList<>());
+        return new CommandKit(name, description, permission, message, requirements, commands, items);
     }
 
     @Override
@@ -54,7 +59,9 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
         value.getNode("name").setValue(obj.getName());
         value.getNode("description").setValue(obj.getDescription());
         value.getNode("requirements", "permission").setValue(obj.getPermission());
+        value.getNode("message", "message").setValue(obj.getMessage());
         value.getNode("requirements").setValue(obj.getRequirements());
         value.getNode("commands").setValue(obj.getCommands());
+        value.getNode("items").setValue(obj.getCommands());
     }
 }

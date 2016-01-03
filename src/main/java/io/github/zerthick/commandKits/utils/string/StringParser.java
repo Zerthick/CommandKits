@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -19,16 +19,14 @@
 
 package io.github.zerthick.commandKits.utils.string;
 
-import io.github.zerthick.commandKits.utils.Debug;
 import io.github.zerthick.commandKits.utils.string.dropin.DropinEngine;
 import io.github.zerthick.commandKits.utils.string.expression.ExpressionParser;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 
 public class StringParser {
 
-    public static String parseCommand(Player player, String command, String[] args){
-        return DropinEngine.replaceDropins(command, player, args);
+    public static String parseDropins(Player player, String copy, String[] args) {
+        return DropinEngine.replaceDropins(copy, player, args);
     }
 
     public static Boolean parseRequirement(Player player, String requirementRule){
