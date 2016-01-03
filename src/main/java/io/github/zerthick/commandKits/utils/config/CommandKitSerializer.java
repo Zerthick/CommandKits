@@ -62,6 +62,6 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
         value.getNode("message", "message").setValue(obj.getMessage());
         value.getNode("requirements").setValue(obj.getRequirements());
         value.getNode("commands").setValue(obj.getCommands());
-        value.getNode("items").setValue(obj.getCommands());
+        value.getNode("items").setValue(obj.getItems());
     }
 }
