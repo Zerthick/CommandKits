@@ -19,6 +19,8 @@
 
 package io.github.zerthick.commandKits.utils.string.expression;
 
+import io.github.zerthick.commandKits.utils.Debug;
+
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,26 +36,26 @@ public class RPNEval {
             }
             return "true";
         }),
-        MULTIPLY(2, args -> String.valueOf(Double.parseDouble(args[0]) * Double.parseDouble(args[1]))),
-        DIVIDE(2, args -> String.valueOf(Double.parseDouble(args[0]) / Double.parseDouble(args[1]))),
-        MOD(2, args -> String.valueOf(Double.parseDouble(args[0]) % Double.parseDouble(args[1]))),
+        MULTIPLY(2, args -> String.valueOf(Double.parseDouble(args[1]) * Double.parseDouble(args[0]))),
+        DIVIDE(2, args -> String.valueOf(Double.parseDouble(args[1]) / Double.parseDouble(args[0]))),
+        MOD(2, args -> String.valueOf(Double.parseDouble(args[1]) % Double.parseDouble(args[0]))),
         ADD(2, args -> {
             //if numeric
             if(args[0].matches("-?\\d+(\\.\\d+)?") && args[1].matches("-?\\d+(\\.\\d+)?")){
-                return String.valueOf(Double.parseDouble(args[0]) + Double.parseDouble(args[1]));
+                return String.valueOf(Double.parseDouble(args[1]) + Double.parseDouble(args[0]));
             }
             // String concat
             return args[1].substring(0, args[1].length()-1) +  args[0].substring(1);
         }),
-        SUBTRACT(2, args -> String.valueOf(Double.parseDouble(args[0]) - Double.parseDouble(args[1]))),
-        LESS(2, args -> String.valueOf(Double.parseDouble(args[0]) < Double.parseDouble(args[1]))),
-        LESS_EQUAL(2, args -> String.valueOf(Double.parseDouble(args[0]) <= Double.parseDouble(args[1]))),
-        GREATER(2, args -> String.valueOf(Double.parseDouble(args[0]) > Double.parseDouble(args[1]))),
-        GREATER_EQUAL(2, args -> String.valueOf(Double.parseDouble(args[0]) >= Double.parseDouble(args[1]))),
-        EQUAL(2, args -> String.valueOf(args[0].equals(args[1]))),
-        NOT_EQUAL(2, args -> String.valueOf(!args[0].equals(args[1]))),
-        AND(2, args -> String.valueOf(Boolean.parseBoolean(args[0]) && Boolean.parseBoolean(args[1]))),
-        OR(2, args -> String.valueOf(Boolean.parseBoolean(args[0]) || Boolean.parseBoolean(args[1])));
+        SUBTRACT(2, args -> String.valueOf(Double.parseDouble(args[1]) - Double.parseDouble(args[0]))),
+        LESS(2, args -> String.valueOf(Double.parseDouble(args[1]) < Double.parseDouble(args[0]))),
+        LESS_EQUAL(2, args -> String.valueOf(Double.parseDouble(args[1]) <= Double.parseDouble(args[0]))),
+        GREATER(2, args -> String.valueOf(Double.parseDouble(args[1]) > Double.parseDouble(args[0]))),
+        GREATER_EQUAL(2, args -> String.valueOf(Double.parseDouble(args[1]) >= Double.parseDouble(args[0]))),
+        EQUAL(2, args -> String.valueOf(args[1].equals(args[0]))),
+        NOT_EQUAL(2, args -> String.valueOf(!args[1].equals(args[0]))),
+        AND(2, args -> String.valueOf(Boolean.parseBoolean(args[1]) && Boolean.parseBoolean(args[0]))),
+        OR(2, args -> String.valueOf(Boolean.parseBoolean(args[1]) || Boolean.parseBoolean(args[0])));
 
         final int numArgs;
         final Operation operation;
@@ -71,7 +73,7 @@ public class RPNEval {
             put("<", Operator.LESS);
             put("<=", Operator.LESS_EQUAL);
             put(">", Operator.GREATER);
-            put("<=", Operator.GREATER_EQUAL);
+            put(">=", Operator.GREATER_EQUAL);
             put("==", Operator.EQUAL);
             put("!=", Operator.NOT_EQUAL);
             put("&&", Operator.AND);
@@ -80,7 +82,6 @@ public class RPNEval {
     };
 
     public static String eval(String rpn){
-        StringBuilder output = new StringBuilder();
         Deque<String> stack  = new LinkedList<>();
 
         for (String token : rpn.split("\\s")) {
@@ -107,7 +108,7 @@ public class RPNEval {
         if(stack.size() != 1){
             return "Parsing_Error";
         }
-
+        Debug.out(stack.peek());
         return stack.pop();
     }
 

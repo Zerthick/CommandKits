@@ -22,6 +22,7 @@ package io.github.zerthick.commandKits;
 import com.google.inject.Inject;
 import io.github.zerthick.commandKits.cmd.CommandKitsCommandRegister;
 import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
+import io.github.zerthick.commandKits.utils.Debug;
 import io.github.zerthick.commandKits.utils.config.CommandKitsConfigManager;
 import io.github.zerthick.commandKits.utils.string.Strings;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -36,7 +37,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 
-@Plugin(id = "CmdKits", name = "Command Kits", version = "0.3.2")
+@Plugin(id = "CmdKits", name = "Command Kits", version = "0.3.3")
 public class CommandKitsMain {
 
     @Inject
@@ -74,6 +75,9 @@ public class CommandKitsMain {
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
+
+        //Intitialize Debug Class
+        new Debug(getLogger());
 
         //Setup ConfigManager
         configManager = CommandKitsConfigManager.getInstance();

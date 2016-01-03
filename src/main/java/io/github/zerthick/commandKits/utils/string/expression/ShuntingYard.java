@@ -46,7 +46,7 @@ public class ShuntingYard {
             put("<", Operator.LESS);
             put("<=", Operator.LESS_EQUAL);
             put(">", Operator.GREATER);
-            put("<=", Operator.GREATER_EQUAL);
+            put(">=", Operator.GREATER_EQUAL);
             put("==", Operator.EQUAL);
             put("!=", Operator.NOT_EQUAL);
             put("&&", Operator.AND);
@@ -55,7 +55,7 @@ public class ShuntingYard {
     };
 
     private static boolean isLowerPrec(String op, String sub) {
-        if(op.equals(Operator.NOT)){
+        if(op.equals("!")){
             return (ops.containsKey(sub) && (ops.get(op).precedence < ops.get(sub).precedence));
         }
         return (ops.containsKey(sub) && (ops.get(op).precedence <= ops.get(sub).precedence));

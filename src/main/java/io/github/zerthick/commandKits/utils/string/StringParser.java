@@ -19,6 +19,7 @@
 
 package io.github.zerthick.commandKits.utils.string;
 
+import io.github.zerthick.commandKits.utils.Debug;
 import io.github.zerthick.commandKits.utils.string.dropin.DropinEngine;
 import io.github.zerthick.commandKits.utils.string.expression.ExpressionParser;
 import org.spongepowered.api.Sponge;

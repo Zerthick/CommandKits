@@ -37,7 +37,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecutor{
 
@@ -62,10 +61,15 @@ public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecu
                         Set<CommandKitRequirement> requirements = kit.getRequirements();
                         if(!requirements.isEmpty()){
                             outputList.add(Text.of(Strings.getInstance().getStrings().get("requirementHeader")));
-                            outputList.addAll(requirements.stream().filter(requirement ->
-                                    requirement.hasRequirement(player)).map(requirement ->
-                                        Text.of(TextColors.GREEN, requirement.getName(), ": ",
-                                        TextColors.WHITE, requirement.getDescription())).collect(Collectors.toList()));
+                            for(CommandKitRequirement requirement : requirements){
+                                if(requirement.hasRequirement(player)) {
+                                    outputList.add(Text.of(TextColors.GREEN, requirement.getName(), TextColors.WHITE,
+                                            ": ", requirement.getDescription()));
+                                } else {
+                                    outputList.add(Text.of(TextColors.RED, requirement.getName(), TextColors.WHITE,
+                                            ": ", requirement.getDescription()));
+                                }
+                            }
                         }
                         Text header;
                         if(kit.hasRequirements(player)){
