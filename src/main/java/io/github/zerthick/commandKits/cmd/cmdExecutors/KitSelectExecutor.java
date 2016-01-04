@@ -54,11 +54,18 @@ public class KitSelectExecutor extends AbstractCmdExecutor implements CommandExe
                     CommandKit kit = kitManager.getKit(kitName);
                     if(kit.hasPermission(player)){
                         if(kit.hasRequirements(player)) {
-                            String[] argArray = new String[0];
-                            if(optionalArgs.isPresent()){
-                                argArray = optionalArgs.get().split(" ");
+                            if (kitManager.checkInterval(player, kitName) == 0) {
+                                String[] argArray = new String[0];
+                                if (optionalArgs.isPresent()) {
+                                    argArray = optionalArgs.get().split(" ");
+                                }
+                                kit.execute(player, argArray);
+                                kitManager.markInterval(player, kitName);
+                            } else {
+                                src.sendMessage(Text.of(TextColors.RED,
+                                        Strings.getInstance().getStrings().get("intervalDenial")
+                                                + kitManager.checkInterval(player, kitName)));
                             }
-                            kit.execute(player, argArray);
                         } else {
                             src.sendMessage(Text.of(TextColors.RED, Strings.getInstance().getStrings().get("requirementDenial")));
                         }

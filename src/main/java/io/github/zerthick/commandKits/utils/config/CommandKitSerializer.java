@@ -40,6 +40,7 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
         final String description = value.getNode("description").getString("No description available!");
         final String permission = value.getNode("requirements", "permission").getString("");
         final String message = value.getNode("message").getString("");
+        final Long interval = value.getNode("interval").getLong(0);
         final Set<CommandKitRequirement> requirements = new HashSet<>();
         Set<Object> keySet = value.getNode("requirements").getChildrenMap().keySet();
         for(Object o : keySet){
@@ -51,7 +52,7 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
         }
         final List<String> commands = value.getNode("commands").getList(TypeToken.of(String.class), new LinkedList<>());
         final List<String> items = value.getNode("items").getList(TypeToken.of(String.class), new LinkedList<>());
-        return new CommandKit(name, description, permission, message, requirements, commands, items);
+        return new CommandKit(name, description, permission, message, requirements, commands, items, interval);
     }
 
     @Override
@@ -63,5 +64,6 @@ public class CommandKitSerializer implements TypeSerializer<CommandKit>{
         value.getNode("requirements").setValue(obj.getRequirements());
         value.getNode("commands").setValue(obj.getCommands());
         value.getNode("items").setValue(obj.getItems());
+        value.getNode("interval").setValue(obj.getInterval());
     }
 }

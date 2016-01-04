@@ -76,6 +76,8 @@ public class CommandKitsConfigManager {
             stringsNode.getNode("requirementHeader").setComment("String to be used as heading of requirement section of" +
                     " /ck info <kitName>")
                     .setValue("Requirements:");
+            stringsNode.getNode("intervalDenial").setComment("Message when a player tries to use a kit before the interval expires")
+                    .setValue("You can't use that kit yet!  Time in seconds until kit is usable again: ");
 
             //Kit Data
             CommentedConfigurationNode exampleKitNode = config.getNode("kits", "Example");
@@ -85,6 +87,8 @@ public class CommandKitsConfigManager {
                     " by the /kc info command").setValue("This is an example kit");
             exampleKitNode.getNode("message").setComment("This message will be sent to the player on executing the kit")
                     .setValue("&9You used the example kit!&f");
+            exampleKitNode.getNode("interval").setComment("This specifies that the kit can only be used onces every" +
+                    " 30 seconds.").setValue(30);
 
             //Requirements
             exampleKitNode.getNode("requirements", "permission").setComment("This is the permission required to run" +
@@ -141,7 +145,7 @@ public class CommandKitsConfigManager {
         Map<String, String> strings = new HashMap<>();
 
         for(Object key : keySet){
-            String string = config.getNode("strings", key).getString();
+            String string = config.getNode("strings", key).getString("update the Strings section of your config!");
             strings.put(key.toString(), string);
         }
 

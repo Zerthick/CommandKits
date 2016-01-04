@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -37,37 +37,31 @@ import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 
-@Plugin(id = "CmdKits", name = "Command Kits", version = "0.3.3")
+@Plugin(id = "CmdKits", name = "Command Kits", version = "1.0.0")
 public class CommandKitsMain {
 
     @Inject
     private Game game;
+    @Inject
+    private Logger logger;
+    @Inject
+    private PluginContainer instance;
+    @Inject
+    @DefaultConfig(sharedRoot = true)
+    private Path defaultConfigPath;
+    @Inject
+    @DefaultConfig(sharedRoot = true)
+    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+    private CommandKitsConfigManager configManager;
+    private CommandKitManager kitManager;
 
     public Game getGame() {
         return game;
     }
 
-    @Inject
-    private Logger logger;
-
     public Logger getLogger() {
         return logger;
     }
-
-    @Inject
-    private PluginContainer instance;
-
-    @Inject
-    @DefaultConfig(sharedRoot = true)
-    private Path defaultConfigPath;
-
-    @Inject
-    @DefaultConfig(sharedRoot = true)
-    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
-
-    private CommandKitsConfigManager configManager;
-
-    private CommandKitManager kitManager;
 
     public CommandKitManager getKitManager() {
         return kitManager;
@@ -84,7 +78,7 @@ public class CommandKitsMain {
         configManager.setUp(defaultConfigPath, configLoader, getLogger());
 
         //Load kits from config
-        kitManager = new CommandKitManager(configManager.loadKits());
+        kitManager = new CommandKitManager(configManager.loadKits(), instance);
 
         //Load strings from config
         Strings.getInstance().setUp(configManager.loadStrings());
@@ -104,7 +98,7 @@ public class CommandKitsMain {
         configManager.reload();
 
         //Load kits from config
-        kitManager = new CommandKitManager(configManager.loadKits());
+        kitManager = new CommandKitManager(configManager.loadKits(), instance);
 
         //Load strings from config
         Strings.getInstance().setUp(configManager.loadStrings());

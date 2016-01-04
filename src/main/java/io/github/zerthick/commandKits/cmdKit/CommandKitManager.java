@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -19,17 +19,31 @@
 
 package io.github.zerthick.commandKits.cmdKit;
 
+import io.github.zerthick.commandKits.CommandKitsMain;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.scheduler.Task;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class CommandKitManager {
 
     private final Map<String, CommandKit> kits;
+    private final Map<String, Map<UUID, Long>> kitIntervalMap;
+    protected PluginContainer container;
+    protected CommandKitsMain plugin;
+    private Task.Builder taskBuilder;
 
-    public CommandKitManager(Map<String, CommandKit> kits) {
+    public CommandKitManager(Map<String, CommandKit> kits, PluginContainer pluginContainer) {
         this.kits = kits;
+        kitIntervalMap = new HashMap<>();
+        taskBuilder = Sponge.getScheduler().createTaskBuilder();
+        container = pluginContainer;
+        plugin = (container.getInstance().get() instanceof CommandKitsMain ? (CommandKitsMain) container.getInstance().get() : null);
     }
 
     public Map<String, CommandKit> getKits() {
@@ -45,5 +59,34 @@ public class CommandKitManager {
             return kits.get(kitName);
         }
         return null;
+    }
+
+    public void markInterval(Player player, String kitName) {
+        if (getKit(kitName).getInterval() > 0) {
+            Map<UUID, Long> intervalMap = kitIntervalMap.getOrDefault(kitName, new HashMap<>());
+            intervalMap.put(player.getUniqueId(), getKit(kitName).getInterval());
+            kitIntervalMap.put(kitName, intervalMap);
+
+            //Updater Task
+            taskBuilder.execute(task -> {
+                Map<UUID, Long> playerIntervalMap = kitIntervalMap.get(kitName);
+                Long oldInterval = playerIntervalMap.get(player.getUniqueId());
+                if (oldInterval <= 1) {
+                    playerIntervalMap.remove(player.getUniqueId());
+                    kitIntervalMap.put(kitName, playerIntervalMap);
+                    task.cancel();
+                    return;
+                }
+                playerIntervalMap.put(player.getUniqueId(), oldInterval - 1);
+                kitIntervalMap.put(kitName, playerIntervalMap);
+            }).interval(1, TimeUnit.SECONDS).name("Command Kits " + kitName + " timer for " + player.getName()).submit(plugin);
+        }
+    }
+
+    public long checkInterval(Player player, String kitName) {
+        if (kitIntervalMap.containsKey(kitName) && kitIntervalMap.get(kitName).containsKey(player.getUniqueId())) {
+            return kitIntervalMap.get(kitName).get(player.getUniqueId());
+        }
+        return 0;
     }
 }

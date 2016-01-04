@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -18,7 +18,7 @@
  */
 
 group 'zerthick.github.io'
-version '0.3.3'
+version '1.0.0'
 
 apply plugin: 'java'
 

@@ -36,8 +36,9 @@ public class CommandKit {
     private final Set<CommandKitRequirement> requirements;
     private final List<String> commands;
     private final List<String> items;
+    private final Long interval;
 
-    public CommandKit(String name, String description, String permission, String message, Set<CommandKitRequirement> requirements, List<String> commands, List<String> items) {
+    public CommandKit(String name, String description, String permission, String message, Set<CommandKitRequirement> requirements, List<String> commands, List<String> items, Long interval) {
         this.name = name;
         this.description = description;
         this.permission = permission;
@@ -45,6 +46,7 @@ public class CommandKit {
         this.requirements = requirements;
         this.commands = commands;
         this.items = items;
+        this.interval = interval;
     }
 
     public String getName() {
@@ -55,7 +57,9 @@ public class CommandKit {
         return description;
     }
 
-    public String getPermission() { return  permission; }
+    public String getPermission() {
+        return permission;
+    }
 
     public String getMessage() {
         return message;
@@ -71,6 +75,10 @@ public class CommandKit {
 
     public List<String> getItems() {
         return items;
+    }
+
+    public Long getInterval() {
+        return interval;
     }
 
     public boolean hasPermission(Player player){
@@ -113,6 +121,22 @@ public class CommandKit {
             String parsedItem = StringParser.parseDropins(player, item, args);
             Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), "minecraft:give "
                     + player.getName() + " " + parsedItem);
+
+            /*String itemName = parsedItem;
+            int amount = 1;
+
+            if(itemName.contains(" ")){
+                int index = parsedItem.indexOf(" ");
+                itemName = parsedItem.substring(0, index);
+                amount = Integer.parseInt(parsedItem.substring(index + 1));
+            }
+
+            Optional<ItemType> optionalItemType = Sponge.getRegistry().getType(ItemType.class, itemName);
+
+            if(optionalItemType.isPresent())
+            {
+                player.getInventory().offer(ItemStack.of(optionalItemType.get(), amount));
+            }*/
         }
     }
 
