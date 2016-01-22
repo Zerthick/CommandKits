@@ -47,10 +47,12 @@ public class CommandKitsEconomyHandler {
     }
 
     public BigDecimal getPlayerBalance(Player player) {
-        Optional<UniqueAccount> uOpt = economyService.getAccount(player.getUniqueId());
-        if (uOpt.isPresent()) {
-            UniqueAccount acc = uOpt.get();
-            return acc.getBalance(economyService.getDefaultCurrency());
+        if (economyService != null) {
+            Optional<UniqueAccount> uOpt = economyService.getAccount(player.getUniqueId());
+            if (uOpt.isPresent()) {
+                UniqueAccount acc = uOpt.get();
+                return acc.getBalance(economyService.getDefaultCurrency());
+            }
         }
         return BigDecimal.valueOf(0);
     }
