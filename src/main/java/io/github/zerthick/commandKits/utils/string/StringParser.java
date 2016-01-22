@@ -17,10 +17,10 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string;
+package io.github.zerthick.commandkits.utils.string;
 
-import io.github.zerthick.commandKits.utils.string.dropin.DropinEngine;
-import io.github.zerthick.commandKits.utils.string.expression.ExpressionParser;
+import io.github.zerthick.commandkits.utils.string.dropin.DropinEngine;
+import io.github.zerthick.commandkits.utils.string.expression.ExpressionParser;
 import org.spongepowered.api.entity.living.player.Player;
 
 public class StringParser {

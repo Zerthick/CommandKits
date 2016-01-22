@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,9 +17,9 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmdKit;
+package io.github.zerthick.commandkits.cmdkit;
 
-import io.github.zerthick.commandKits.utils.string.StringParser;
+import io.github.zerthick.commandkits.utils.string.StringParser;
 import org.spongepowered.api.entity.living.player.Player;
 
 public class CommandKitRequirement {

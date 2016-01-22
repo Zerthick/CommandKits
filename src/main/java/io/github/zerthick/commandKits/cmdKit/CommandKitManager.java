@@ -17,9 +17,9 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmdKit;
+package io.github.zerthick.commandkits.cmdkit;
 
-import io.github.zerthick.commandKits.CommandKitsMain;
+import io.github.zerthick.commandkits.CommandKitsMain;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.plugin.PluginContainer;

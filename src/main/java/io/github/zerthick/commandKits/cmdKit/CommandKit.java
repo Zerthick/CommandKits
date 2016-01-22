@@ -17,14 +17,17 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmdKit;
+package io.github.zerthick.commandkits.cmdkit;
 
-import io.github.zerthick.commandKits.utils.string.StringParser;
+import io.github.zerthick.commandkits.utils.string.StringParser;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class CommandKit {
@@ -118,11 +121,10 @@ public class CommandKit {
 
     private void executeItems(Player player, String[] args) {
         for (String item : items) {
-            String parsedItem = StringParser.parseDropins(player, item, args);
-            Sponge.getGame().getCommandManager().process(Sponge.getGame().getServer().getConsole(), "minecraft:give "
-                    + player.getName() + " " + parsedItem);
 
-            /*String itemName = parsedItem;
+            String parsedItem = StringParser.parseDropins(player, item, args);
+
+            String itemName = parsedItem;
             int amount = 1;
 
             if(itemName.contains(" ")){
@@ -132,11 +134,10 @@ public class CommandKit {
             }
 
             Optional<ItemType> optionalItemType = Sponge.getRegistry().getType(ItemType.class, itemName);
-
             if(optionalItemType.isPresent())
             {
                 player.getInventory().offer(ItemStack.of(optionalItemType.get(), amount));
-            }*/
+            }
         }
     }
 

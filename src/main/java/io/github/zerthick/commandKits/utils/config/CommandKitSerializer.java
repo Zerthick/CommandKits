@@ -17,11 +17,11 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.config;
+package io.github.zerthick.commandkits.utils.config;
 
 import com.google.common.reflect.TypeToken;
-import io.github.zerthick.commandKits.cmdKit.CommandKit;
-import io.github.zerthick.commandKits.cmdKit.CommandKitRequirement;
+import io.github.zerthick.commandkits.cmdkit.CommandKit;
+import io.github.zerthick.commandkits.cmdkit.CommandKitRequirement;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;

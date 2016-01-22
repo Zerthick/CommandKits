@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,9 +17,9 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmd.cmdExecutors;
+package io.github.zerthick.commandkits.cmd.cmdexecutors;
 
-import io.github.zerthick.commandKits.CommandKitsMain;
+import io.github.zerthick.commandkits.CommandKitsMain;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.plugin.PluginContainer;
 

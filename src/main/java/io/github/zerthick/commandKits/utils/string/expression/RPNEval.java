@@ -17,7 +17,7 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string.expression;
+package io.github.zerthick.commandkits.utils.string.expression;
 
 import java.util.Deque;
 import java.util.HashMap;

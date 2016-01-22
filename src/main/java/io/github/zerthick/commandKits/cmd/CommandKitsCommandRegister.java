@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,11 +17,10 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmd;
+package io.github.zerthick.commandkits.cmd;
 
-import io.github.zerthick.commandKits.CommandKitsMain;
-import io.github.zerthick.commandKits.cmd.cmdExecutors.*;
-import org.spongepowered.api.Game;
+import io.github.zerthick.commandkits.cmd.cmdexecutors.*;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -29,23 +28,12 @@ import org.spongepowered.api.text.Text;
 
 public class CommandKitsCommandRegister {
 
-    private PluginContainer container;
-    private Game game;
 
-    public CommandKitsCommandRegister(PluginContainer pluginContainer) {
-
-        //Unpack Container
-        container = pluginContainer;
-        CommandKitsMain plugin = (CommandKitsMain) (container.getInstance().get() instanceof CommandKitsMain ? container
-                .getInstance().get() : null);
-        game = plugin.getGame();
-    }
-
-    public void registerCmds() {
+    public static void registerCmds(PluginContainer container) {
         // ck info <KitName>
         CommandSpec kitInfoCommand = CommandSpec.builder()
                 .description(Text.of("/ck kitInfo <kitName>"))
-                .permission("commandKits.command.kitInfo")
+                .permission("commandkits.command.kitInfo")
                 .arguments(GenericArguments.optional(GenericArguments.string(Text.of("kitName"))))
                 .executor(new KitInfoExecutor(container))
                 .build();
@@ -53,28 +41,28 @@ public class CommandKitsCommandRegister {
         //ck configReload
         CommandSpec configReloadCommand = CommandSpec.builder()
                 .description(Text.of("/ck reload"))
-                .permission("commandKits.command.reloadConfig")
+                .permission("commandkits.command.reloadConfig")
                 .executor(new ConfigReloadExecutor(container))
                 .build();
 
         //ck pluginInfo
         CommandSpec pluginInfoCommand = CommandSpec.builder()
                 .description(Text.of("/ck pluginInfo"))
-                .permission("commandKits.command.pluginInfo")
+                .permission("commandkits.command.pluginInfo")
                 .executor(new PluginInfoExecutor(container))
                 .build();
 
         //ck list
         CommandSpec kitListCommand = CommandSpec.builder()
                 .description(Text.of("/ck list"))
-                .permission("commandKits.command.list")
+                .permission("commandkits.command.list")
                 .executor(new KitListExecutor(container))
                 .build();
 
         // ck <KitName> [args]
         CommandSpec kitSelectCommand = CommandSpec.builder()
                 .description(Text.of("/ck <kitName>"))
-                .permission("commandKits.command.select")
+                .permission("commandkits.command.select")
                 .arguments(GenericArguments.string(Text.of("kitName")),
                         GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("args"))))
                 .executor(new KitSelectExecutor(container))
@@ -84,7 +72,7 @@ public class CommandKitsCommandRegister {
                 .child(configReloadCommand, "reload", "reloadConfig")
                 .build();
 
-        game.getCommandManager().register(container.getInstance().get(),
-                kitSelectCommand, "commandKits", "ck");
+        Sponge.getGame().getCommandManager().register(container.getInstance().get(),
+                kitSelectCommand, "commandkits", "ck");
     }
 }

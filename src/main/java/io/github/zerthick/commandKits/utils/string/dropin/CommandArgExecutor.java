@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,7 +17,7 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string.dropin;
+package io.github.zerthick.commandkits.utils.string.dropin;
 
 import org.spongepowered.api.entity.living.player.Player;
 
