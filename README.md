@@ -1,7 +1,7 @@
 # Command Kits
 Command Kits is a simple yet flexible command kit plugin. Groups of commands called "kits" can be defined in the plugin config file. Players can then execute these kits all at once with one command. Requirements can also be set on the kits to only allow players to execute them under certain circumstances.
 
-You can check out the Command Kits Sponge Forum post [here](https://forums.spongepowered.org/t/wip-graveyards-v0-1-0-pre-defined-spawnpoints-for-players/9575 "Command Kits Forum Post")!
+You can check out the Command Kits Sponge Forum post [here](https://forums.spongepowered.org/t/command-kits-v1-0-0-kits-of-commands-and-items/10270 "Command Kits Forum Post")!
 
 #Commands:
     /ck <kitName> - Attempts to execute the Command Kit with the specified kitName. (Aliases: ck, commandKits)
