@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,13 +17,13 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.cmd.cmdExecutors;
+package io.github.zerthick.commandkits.cmd.cmdexecutors;
 
 
-import io.github.zerthick.commandKits.cmdKit.CommandKit;
-import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
-import io.github.zerthick.commandKits.cmdKit.CommandKitRequirement;
-import io.github.zerthick.commandKits.utils.string.Strings;
+import io.github.zerthick.commandkits.cmdkit.CommandKit;
+import io.github.zerthick.commandkits.cmdkit.CommandKitManager;
+import io.github.zerthick.commandkits.cmdkit.CommandKitRequirement;
+import io.github.zerthick.commandkits.utils.string.Strings;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -36,7 +36,10 @@ import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class KitInfoExecutor extends AbstractCmdExecutor implements CommandExecutor{
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,7 +17,7 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string.expression;
+package io.github.zerthick.commandkits.utils.string.expression;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -25,15 +25,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class ShuntingYard {
-
-    private enum Operator {
-        NOT(7), MULTIPLY(6), DIVIDE(6), MOD(6), ADD(5), SUBTRACT(5),
-        LESS(4), LESS_EQUAL(4), GREATER(4), GREATER_EQUAL(4),
-        EQUAL(3), NOT_EQUAL(3), AND(2), OR(1);
-
-        final int precedence;
-        Operator(int p) { precedence = p; }
-    }
 
     private static Map<String, Operator> ops = new HashMap<String, Operator>() {
         {
@@ -94,5 +85,17 @@ public class ShuntingYard {
             output.append(stack.pop()).append(' ');
 
         return output.toString();
+    }
+
+    private enum Operator {
+        NOT(7), MULTIPLY(6), DIVIDE(6), MOD(6), ADD(5), SUBTRACT(5),
+        LESS(4), LESS_EQUAL(4), GREATER(4), GREATER_EQUAL(4),
+        EQUAL(3), NOT_EQUAL(3), AND(2), OR(1);
+
+        final int precedence;
+
+        Operator(int p) {
+            precedence = p;
+        }
     }
 }

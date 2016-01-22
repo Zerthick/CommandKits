@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,7 +17,7 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.config.zconfig;
+package io.github.zerthick.commandkits.utils.config.zconfig;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -30,7 +30,9 @@ import java.nio.file.Path;
 public class ZConfigManager {
 
     private static ZConfigManager instance = null;
-
+    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+    private CommentedConfigurationNode config;
+    private Logger logger;
     protected ZConfigManager(){
         //Singleton Design Pattern
     }
@@ -41,10 +43,6 @@ public class ZConfigManager {
         }
         return instance;
     }
-
-    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
-    private CommentedConfigurationNode config;
-    private Logger logger;
 
     public void setup(Path configFile, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger, DefaultConfigBuilder defaultConfigBuilder) {
         this.configLoader = configLoader;

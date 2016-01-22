@@ -17,8 +17,9 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string.dropin;
+package io.github.zerthick.commandkits.utils.string.dropin;
 
+import io.github.zerthick.commandkits.utils.economy.CommandKitsEconomyHandler;
 import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class DropinEngine {
                 }
                 return player.getUniqueId().toString();
             });
+            put("PLAYER_BALANCE", ((player, args1) -> String.valueOf(CommandKitsEconomyHandler.getInstance().getPlayerBalance(player))));
             put("WORLD_NAME", (player, args) -> {
                 if(args.length > 0){
                     if(args[0].equals("useTypeFlag")){
@@ -66,6 +68,7 @@ public class DropinEngine {
             put("KEYS_", new DataKeyExecutor());
             put("ARGS_", new CommandArgExecutor());
             put("PERM_", (player, args) -> String.valueOf(player.hasPermission(args[0].replace("PERM_", ""))));
+            put("INV_", new InventoryExecutor());
         }
     };
 
@@ -86,6 +89,9 @@ public class DropinEngine {
                         .toArray(String[]::new));
             } else if(key.startsWith("PERM_")) { //Permission key
                 result = dropinMap.get("PERM_").execute(player, Stream.of(new String[]{key}, args).flatMap(Stream::of)
+                        .toArray(String[]::new));
+            } else if (key.startsWith("INV_")) { //Inventory key
+                result = dropinMap.get("INV_").execute(player, Stream.of(new String[]{key}, args).flatMap(Stream::of)
                         .toArray(String[]::new));
             } else if(dropinMap.containsKey(key)){ //Vanilla Dropin
                 result = dropinMap.get(key).execute(player, args);

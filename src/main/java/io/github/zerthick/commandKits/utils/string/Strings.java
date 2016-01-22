@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Zerthick
+ * Copyright (C) 2016  Zerthick
  *
  * This file is part of CommandKits.
  *
@@ -17,7 +17,7 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits.utils.string;
+package io.github.zerthick.commandkits.utils.string;
 
 import java.util.Collections;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class Strings {
     }
 
     public void setUp(Map<String, String> strings){
-        this.strings = strings;
+        Strings.strings = strings;
     }
 
     public Map<String, String> getStrings(){

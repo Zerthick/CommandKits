@@ -17,14 +17,15 @@
  * along with CommandKits.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.zerthick.commandKits;
+package io.github.zerthick.commandkits;
 
 import com.google.inject.Inject;
-import io.github.zerthick.commandKits.cmd.CommandKitsCommandRegister;
-import io.github.zerthick.commandKits.cmdKit.CommandKitManager;
-import io.github.zerthick.commandKits.utils.Debug;
-import io.github.zerthick.commandKits.utils.config.CommandKitsConfigManager;
-import io.github.zerthick.commandKits.utils.string.Strings;
+import io.github.zerthick.commandkits.cmd.CommandKitsCommandRegister;
+import io.github.zerthick.commandkits.cmdkit.CommandKitManager;
+import io.github.zerthick.commandkits.utils.Debug;
+import io.github.zerthick.commandkits.utils.config.CommandKitsConfigManager;
+import io.github.zerthick.commandkits.utils.economy.CommandKitsEconomyHandler;
+import io.github.zerthick.commandkits.utils.string.Strings;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
@@ -32,8 +33,10 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.economy.EconomyService;
 
 import java.nio.file.Path;
 
@@ -70,7 +73,7 @@ public class CommandKitsMain {
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
-        //Intitialize Debug Class
+        //Initialize Debug Class
         new Debug(getLogger());
 
         //Setup ConfigManager
@@ -84,14 +87,21 @@ public class CommandKitsMain {
         Strings.getInstance().setUp(configManager.loadStrings());
 
         // Register Commands
-        CommandKitsCommandRegister commandRegister = new CommandKitsCommandRegister(
-                instance);
-        commandRegister.registerCmds();
+        CommandKitsCommandRegister.registerCmds(instance);
 
         // Log Start Up to Console
         getLogger().info(
                 instance.getName() + " version " + instance.getVersion()
                         + " enabled!");
+    }
+
+    @Listener
+    public void onChangeServiceProvider(ChangeServiceProviderEvent event) {
+
+        //Set up Economy Handler
+        if (event.getService().equals(EconomyService.class)) {
+            CommandKitsEconomyHandler.getInstance().setUp((EconomyService) event.getNewProviderRegistration().getProvider());
+        }
     }
 
     public void reloadConfig(){
