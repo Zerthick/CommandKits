@@ -44,8 +44,6 @@ import java.nio.file.Path;
 public class CommandKitsMain {
 
     @Inject
-    private Game game;
-    @Inject
     private Logger logger;
     @Inject
     private PluginContainer instance;
@@ -57,10 +55,6 @@ public class CommandKitsMain {
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
     private CommandKitsConfigManager configManager;
     private CommandKitManager kitManager;
-
-    public Game getGame() {
-        return game;
-    }
 
     public Logger getLogger() {
         return logger;
