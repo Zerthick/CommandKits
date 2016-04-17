@@ -40,7 +40,7 @@ public class PluginInfoExecutor extends AbstractCmdExecutor implements CommandEx
 
         src.sendMessage(Text.of(TextColors.DARK_GREEN, container.getName(),
                 TextColors.GREEN, " version: ", TextColors.DARK_GREEN,
-                container.getVersion(), TextColors.GREEN, " by ",
+                container.getVersion().orElse(""), TextColors.GREEN, " by ",
                 TextColors.DARK_GREEN, "Zerthick"));
 
         return CommandResult.success();

@@ -21,6 +21,7 @@ package io.github.zerthick.commandkits.cmd.cmdexecutors;
 
 import io.github.zerthick.commandkits.cmdkit.CommandKit;
 import io.github.zerthick.commandkits.utils.string.Strings;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -28,7 +29,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -68,11 +69,11 @@ public class KitListExecutor extends AbstractCmdExecutor implements CommandExecu
         return CommandResult.success();
     }
 
-    private PaginationBuilder listBuilder(List<Text> list){
-        PaginationService pagServ = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
-        PaginationBuilder builder = pagServ.builder();
+    private PaginationList.Builder listBuilder(List<Text> list){
+        PaginationService pagServ = Sponge.getGame().getServiceManager().provide(PaginationService.class).get();
+        PaginationList.Builder builder = pagServ.builder();
         builder.contents(list).title(Text.of(Strings.getInstance().getStrings().get("listHeader")))
-                .paddingString(Strings.getInstance().getStrings().get("listPadding"));
+                .padding(Text.of(Strings.getInstance().getStrings().get("listPadding")));
         return builder;
     }
 }
