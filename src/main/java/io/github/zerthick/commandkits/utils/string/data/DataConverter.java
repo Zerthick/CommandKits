@@ -54,7 +54,6 @@ public class DataConverter {
             put("LAST_DAMAGE", Keys.LAST_DAMAGE);
             put("MAX_HEALTH", Keys.MAX_HEALTH);
             put("REMAINING_AIR", Keys.REMAINING_AIR);
-            put("SHOWS_DISPLAY_NAME", Keys.SHOWS_DISPLAY_NAME);
             put("WALKING_SPEED", Keys.WALKING_SPEED);
         }
     };

@@ -39,7 +39,7 @@ import org.spongepowered.api.service.economy.EconomyService;
 
 import java.nio.file.Path;
 
-@Plugin(id = "CmdKits", name = "Command Kits", version = "1.0.0")
+@Plugin(id = "CmdKits", name = "Command Kits", version = "1.1.0")
 public class CommandKitsMain {
 
     @Inject
@@ -84,7 +84,7 @@ public class CommandKitsMain {
 
         // Log Start Up to Console
         getLogger().info(
-                instance.getName() + " version " + instance.getVersion()
+                instance.getName() + " version " + instance.getVersion().orElse("")
                         + " enabled!");
     }
 

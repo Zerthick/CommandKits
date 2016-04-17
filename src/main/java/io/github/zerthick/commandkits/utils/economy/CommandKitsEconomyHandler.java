@@ -48,7 +48,7 @@ public class CommandKitsEconomyHandler {
 
     public BigDecimal getPlayerBalance(Player player) {
         if (economyService != null) {
-            Optional<UniqueAccount> uOpt = economyService.getAccount(player.getUniqueId());
+            Optional<UniqueAccount> uOpt = economyService.getOrCreateAccount(player.getUniqueId());
             if (uOpt.isPresent()) {
                 UniqueAccount acc = uOpt.get();
                 return acc.getBalance(economyService.getDefaultCurrency());
