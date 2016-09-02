@@ -59,6 +59,15 @@ public class CommandKitsCommandRegister {
                 .executor(new KitListExecutor(container))
                 .build();
 
+        // ck give <Player> <KitName> [args]
+        CommandSpec kitGiveCommand = CommandSpec.builder()
+                .description(Text.of("/ck give"))
+                .permission("commandkits.command.give")
+                .arguments(GenericArguments.player(Text.of("player")), GenericArguments.string(Text.of("kitName")),
+                        GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("args"))))
+                .executor(new KitGiveExecutor(container))
+                .build();
+
         // ck <KitName> [args]
         CommandSpec kitSelectCommand = CommandSpec.builder()
                 .description(Text.of("/ck <kitName>"))
@@ -68,6 +77,7 @@ public class CommandKitsCommandRegister {
                 .executor(new KitSelectExecutor(container))
                 .child(kitInfoCommand, "info")
                 .child(kitListCommand,"list", "ls" )
+                .child(kitGiveCommand, "give")
                 .child(pluginInfoCommand, "pluginInfo")
                 .child(configReloadCommand, "reload", "reloadConfig")
                 .build();
