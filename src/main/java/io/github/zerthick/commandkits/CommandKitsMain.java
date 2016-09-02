@@ -39,7 +39,10 @@ import org.spongepowered.api.service.economy.EconomyService;
 
 import java.nio.file.Path;
 
-@Plugin(id = "cmdkits", name = "Command Kits", version = "1.1.1")
+@Plugin(id = "cmdkits",
+        name = "Command Kits",
+        version = "1.2.0",
+        description = "Pre-defined Kits of Commands and Items!")
 public class CommandKitsMain {
 
     @Inject
